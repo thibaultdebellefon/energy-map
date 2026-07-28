@@ -19,7 +19,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 12          # hard cap — a throttled GDELT run can't hang
+    timeout-minutes: 18          # hard cap — room for a slow GDELT fetch + build
     steps:
       - uses: actions/checkout@v4
 
