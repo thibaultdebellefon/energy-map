@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Energy Map · Global crude &amp; LNG trade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<div id="app">
+  <!-- Top control bar -->
+  <header class="bar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div class="brand-txt">
+        <h1>ENERGY&nbsp;MAP</h1>
+        <p id="subtitle">Global crude oil &amp; LNG trade</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="seg view" id="view" role="group" aria-label="View">
+        <button data-v="overview" class="on">Overview</button>
+        <button data-v="trade">Trade</button>
+      </div>
+
+      <div class="seg layers" id="layers" role="group" aria-label="Layers" hidden>
+        <button data-l="sites" class="on">Sites</button>
+        <button data-l="ports" class="on">Ports</button>
+        <button data-l="routes" class="on">Routes</button>
+      </div>
+
+      <label class="field">
+        <span>Commodity</span>
+        <select id="commodity"></select>
+      </label>
+
+      <button id="chain" class="ghost" title="Show the ore → refined value chain (metals with both)">⛓ Chain</button>
+
+      <label class="field">
+        <span>Shade by</span>
+        <select id="metric">
+          <option value="prod">Production</option>
+          <option value="exp">Exports&nbsp;($)</option>
+          <option value="imp">Imports&nbsp;($)</option>
+          <option value="net" selected>Net&nbsp;trade&nbsp;($)</option>
+          <option value="gap">Ore&nbsp;→&nbsp;refined</option>
+          <option value="none">Nothing</option>
+        </select>
+      </label>
+
+      <label class="field slider">
+        <span>Routes <b id="topN-val">15</b></span>
+        <input id="topN" type="range" min="4" max="80" step="1" value="15" />
+      </label>
+
+      <button id="reset" class="ghost" title="Reset view">Reset</button>
+    </div>
+  </header>
+
+  <!-- Left rail: global leaderboard / country profile -->
+  <aside class="panel" id="panel">
+    <div id="panel-global">
+      <div class="stats">
+        <div class="stat"><b id="s-total">—</b><span>traded / yr</span></div>
+        <div class="stat"><b id="s-exp">—</b><span>exporters</span></div>
+        <div class="stat"><b id="s-routes">—</b><span>routes</span></div>
+      </div>
+      <div class="lead-head">
+        <h2 id="lead-title">Top exporters</h2>
+        <span class="hint">click a bar or the map</span>
+      </div>
+      <ol id="leaderboard" class="leaderboard"></ol>
+    </div>
+
+    <div id="panel-country" hidden>
+      <button id="back" class="back">← All countries</button>
+      <h2 id="c-name">—</h2>
+      <div class="c-iso" id="c-iso">—</div>
+      <div class="c-grid" id="c-metrics"></div>
+      <div class="lead-head"><h3 id="c-flows-title">Top destinations</h3></div>
+      <ol id="c-flows" class="leaderboard"></ol>
+    </div>
+
+    <div id="panel-routes" hidden>
+      <div class="lead-head">
+        <h2>Top trade routes</h2>
+        <span class="hint">click a country to isolate</span>
+      </div>
+      <ol id="exchanges" class="leaderboard"></ol>
+    </div>
+
+    <div id="panel-infra" hidden>
+      <div class="lead-head">
+        <h2>Production sites</h2>
+        <span class="hint">click a marker</span>
+      </div>
+      <p class="prov-mini" id="infra-note"></p>
+      <ol id="infra-list" class="leaderboard"></ol>
+    </div>
+
+    <div id="panel-facility" hidden>
+      <button id="fac-back" class="back">← All sites</button>
+      <figure id="f-photo" class="f-photo" hidden><img alt="" /><figcaption></figcaption></figure>
+      <h2 id="f-name">—</h2>
+      <div class="c-iso" id="f-type">—</div>
+      <div id="f-meta" class="r-meta"></div>
+    </div>
+
+    <div id="panel-flow" hidden>
+      <button id="flow-back" class="back">← All routes</button>
+      <h2 id="fl-name">—</h2>
+      <div class="c-iso" id="fl-sub">—</div>
+      <div id="fl-meta" class="r-meta"></div>
+    </div>
+
+    <div id="panel-port" hidden>
+      <button id="port-back" class="back">← All routes</button>
+      <h2 id="pt-name">—</h2>
+      <div class="c-iso" id="pt-sub">—</div>
+      <div id="pt-meta" class="r-meta"></div>
+    </div>
+  </aside>
+
+  <!-- The map is the hero -->
+  <main class="stage">
+    <button id="panel-toggle" class="panel-toggle" title="Hide / show panel"
+            aria-label="Hide or show side panel">‹</button>
+    <svg id="map" role="img" aria-label="World map of energy trade flows"></svg>
+    <div id="tooltip" class="tooltip" hidden></div>
+    <div id="loading" class="loading">Loading trade data…</div>
+
+    <div class="legend" id="legend">
+      <div class="legend-row commodities">
+        <span id="legend-comm"></span>
+        <span class="sep"></span>
+        <span class="flow-key"><i class="arc"></i>flow = value · animates source → destination</span>
+      </div>
+      <div class="legend-row scale">
+        <span id="scale-label">Net trade ($)</span>
+        <span id="scale-min" class="mono">—</span>
+        <div id="scale-grad" class="grad"></div>
+        <span id="scale-max" class="mono">—</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="nav.js"></script>
+<script src="vendor/d3.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

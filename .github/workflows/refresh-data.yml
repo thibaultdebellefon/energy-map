@@ -1,0 +1,78 @@
+name: Refresh data
+
+# Keeps the static news.json / prices.json fresh. Runs the Python pipeline on a
+# schedule, rebuilds the JSON the frontend reads, and commits it back — Vercel
+# then redeploys on the push. The SQLite DB is NOT versioned, so each run fetches
+# a fresh rolling window (news = last 7 days; prices = full history from FRED/AV).
+on:
+  schedule:
+    - cron: "17 * * * *"   # hourly, at :17 past the hour
+  workflow_dispatch: {}      # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet gdeltdoc
+
+      - name: Fetch news (rolling 7-day window)
+        continue-on-error: true            # GDELT throttling must not fail the run
+        run: python data-pipeline/fetch_news_gdelt.py --timespan 7d
+
+      - name: Fetch prices — FRED (keyless)
+        continue-on-error: true
+        run: python data-pipeline/fetch_prices_fred.py
+
+      - name: Fetch prices — Alpha Vantage
+        continue-on-error: true
+        env:
+          ALPHAVANTAGE_KEY: ${{ secrets.ALPHAVANTAGE_KEY }}
+        run: python data-pipeline/fetch_prices_alphavantage.py
+
+      - name: Rebuild JSON
+        run: |
+          python app/build_news_trading.py
+          python app/build_companies.py
+
+      - name: Guard against empty output
+        # If a fetch was fully throttled the rebuilt file can be near-empty.
+        # Restore the last committed version rather than blanking the site.
+        run: |
+          guard() {
+            local f="$1" min="$2" n
+            n=$(python -c "import json,sys;print(len(json.load(open('$f')).get('articles') or json.load(open('$f')).get('series') or []))" 2>/dev/null || echo 0)
+            if [ "$n" -lt "$min" ]; then
+              echo "::warning::$f only has $n entries (<$min) — keeping committed version"
+              git checkout -- "$f" 2>/dev/null || true
+            else
+              echo "$f OK ($n entries)"
+            fi
+          }
+          guard app/public/news.json 5
+          guard app/public/prices.json 3
+
+      - name: Commit if changed
+        run: |
+          git config user.name "energy-map-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/public/news.json app/public/prices.json app/public/companies.json
+          if git diff --cached --quiet; then
+            echo "No data changes — nothing to commit."
+          else
+            git commit -m "chore(data): scheduled refresh [skip ci]"
+            git push
+          fi

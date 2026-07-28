@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Markets desk · Energy Map</title>
+<meta name="description" content="Commodity price history and charts, from FRED and Alpha Vantage." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<main class="page">
+  <div class="page-in">
+    <p class="eyebrow">Markets desk</p>
+    <h1>Where commodity prices are heading</h1>
+    <p class="lede">Monthly and daily price history per commodity, from FRED and Alpha
+      Vantage. Pick a market from the watchlist to chart it.</p>
+
+    <div class="terminal">
+      <aside class="watchlist">
+        <div class="wl-head">Watchlist</div>
+        <div id="watchlist"></div>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="dot" id="p-dot"></span>
+            <div><h2 id="p-name">—</h2><div class="u" id="p-unit"></div></div>
+          </div>
+          <div class="price-now">
+            <div class="big" id="p-price">—</div>
+            <div class="chg" id="p-chg"></div>
+          </div>
+        </div>
+        <div class="stats-strip" id="stats"></div>
+        <div class="ranges" id="ranges"></div>
+        <div class="chart-wrap" style="position:relative">
+          <svg id="chart"></svg>
+          <div class="tip" id="tip"></div>
+        </div>
+        <div class="foot-note" id="foot"></div>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="commodities.js"></script>
+<script src="nav.js"></script>
+<script src="vendor/d3.min.js"></script>
+<script src="trading.js"></script>
+</body>
+</html>

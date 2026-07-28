@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Energy Map · Global commodity intelligence</title>
+<meta name="description" content="One map for the physical economy: where crude oil, LNG and 12 critical metals are produced, how they trade, what the news says, and where prices are heading." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<main class="page">
+  <div class="page-in">
+
+    <section class="hero">
+      <div class="hero-orb"></div>
+      <p class="eyebrow">Global commodity intelligence</p>
+      <h1>The physical economy, <span class="accent">on one map.</span></h1>
+      <p class="sub">Crude oil, LNG and twelve critical metals — where they come out of the
+        ground, how they move across the oceans, what the world is writing about them, and
+        where their prices are heading. One place to see the whole system.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="map.html">Open the map <span class="arw">→</span></a>
+        <a class="btn ghost" href="trading.html">See live prices</a>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Live commodity prices">
+      <div class="ticker-track" id="ticker"></div>
+    </section>
+
+    <section class="sections">
+      <a class="scard" href="map.html" style="--accent:var(--crude)">
+        <div class="ic"><span>Map</span><span class="no">01</span></div>
+        <h3>The world map</h3>
+        <p>An interactive planisphere of production sites, maritime trade routes, ports and
+          country-to-country flows — switchable across every commodity.</p>
+        <div class="stat" id="stat-map"><b>20</b> commodities tracked
+          <span class="go">→</span></div>
+      </a>
+      <a class="scard" href="companies.html" style="--accent:#4B7BEC">
+        <div class="ic"><span>Companies</span><span class="no">02</span></div>
+        <h3>The players</h3>
+        <p>The supermajors and trading houses that move it all — their operated
+          infrastructure, mapped, and where each sits in every commodity.</p>
+        <div class="stat"><b>12</b> majors &amp; trading houses
+          <span class="go">→</span></div>
+      </a>
+      <a class="scard" href="news.html" style="--accent:var(--lng)">
+        <div class="ic"><span>News</span><span class="no">03</span></div>
+        <h3>The newsroom</h3>
+        <p>Live headlines from across the commodity world via the GDELT Project, filterable
+          by market and linking straight to the original source.</p>
+        <div class="stat" id="stat-news"><b>—</b> headlines this week
+          <span class="go">→</span></div>
+      </a>
+      <a class="scard" href="trading.html" style="--accent:#B7E23F">
+        <div class="ic"><span>Trading</span><span class="no">04</span></div>
+        <h3>The markets desk</h3>
+        <p>Price history for every priced commodity, from FRED and Alpha Vantage, with a
+          watchlist and clean, readable charts.</p>
+        <div class="stat" id="stat-trading"><b>—</b> price series live
+          <span class="go">→</span></div>
+      </a>
+    </section>
+
+    <section class="coverage">
+      <div class="lbl">Coverage · 12 commodities</div>
+      <div class="cov-grid" id="coverage"></div>
+    </section>
+
+    <footer class="provenance">
+      <span class="k">Sourced from</span>
+      <span class="src">UN Comtrade</span><span class="sep">·</span>
+      <span class="src">EIA</span><span class="sep">·</span>
+      <span class="src">USGS</span><span class="sep">·</span>
+      <span class="src">GDELT</span><span class="sep">·</span>
+      <span class="src">FRED</span><span class="sep">·</span>
+      <span class="src">Alpha Vantage</span>
+    </footer>
+
+  </div>
+</main>
+<script src="commodities.js"></script>
+<script src="nav.js"></script>
+<script src="landing.js"></script>
+</body>
+</html>

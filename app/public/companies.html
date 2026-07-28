@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Companies · Energy Map</title>
+<meta name="description" content="The majors and trading houses that move the world's commodities — their operated infrastructure and where they sit in each market." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<main class="companies">
+  <aside class="co-panel">
+    <div class="co-panel-head">
+      <p class="eyebrow" style="margin:0">Companies</p>
+      <span class="co-sub" id="roster-count"></span>
+    </div>
+    <div class="co-pick" id="picker"></div>
+    <div class="co-profile" id="profile"></div>
+  </aside>
+  <section class="co-map">
+    <svg id="cmap"></svg>
+    <div class="co-legend" id="legend"></div>
+    <div class="co-pop" id="pop" hidden></div>
+  </section>
+</main>
+<script src="commodities.js"></script>
+<script src="nav.js"></script>
+<script src="vendor/d3.min.js"></script>
+<script src="companies.js"></script>
+</body>
+</html>

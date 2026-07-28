@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Newsroom · Energy Map</title>
+<meta name="description" content="Live commodity headlines from across the world, filterable by market." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<main class="page">
+  <div class="page-in">
+    <p class="eyebrow">Newsroom</p>
+    <div class="news-head">
+      <h1>What the commodity world is saying</h1>
+      <div class="news-count" id="count"></div>
+    </div>
+    <p class="lede">Live headlines from across global media via the GDELT Project. Filter by
+      market and click through to the original source — we link out, never republish.</p>
+    <div class="filters" id="filters"></div>
+    <div id="lead"></div>
+    <div class="news-list" id="list"></div>
+    <div class="more-wrap" id="more"></div>
+  </div>
+</main>
+<script src="commodities.js"></script>
+<script src="nav.js"></script>
+<script src="news.js"></script>
+</body>
+</html>
