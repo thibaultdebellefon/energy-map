@@ -19,6 +19,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 12          # hard cap — a throttled GDELT run can't hang
     steps:
       - uses: actions/checkout@v4
 
@@ -31,6 +32,10 @@ jobs:
 
       - name: Fetch news (rolling 7-day window)
         continue-on-error: true            # GDELT throttling must not fail the run
+        env:
+          GDELT_MAX_RETRIES: "2"           # fail fast in CI (local default stays 5)
+          GDELT_RETRY_BASE: "5"
+          GDELT_QUERY_SLEEP: "6"
         run: python data-pipeline/fetch_news_gdelt.py --timespan 7d
 
       - name: Fetch prices — FRED (keyless)

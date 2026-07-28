@@ -14,12 +14,19 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import sys
 import time
 
 from gdeltdoc import Filters, GdeltDoc
 
 import db
+
+# Retry/pacing budget — tunable via env so CI can fail fast on GDELT throttling
+# while local runs stay patient. Defaults preserve the original behaviour.
+MAX_RETRIES = int(os.environ.get("GDELT_MAX_RETRIES", "5"))
+RETRY_BASE = int(os.environ.get("GDELT_RETRY_BASE", "8"))
+QUERY_SLEEP = int(os.environ.get("GDELT_QUERY_SLEEP", "10"))
 
 # Our tracked commodities -> GDELT search terms. A bare word ("nickel") matches
 # any context — "satin nickel" cabinet knobs, a phone's "graphite" colour, the
@@ -54,12 +61,12 @@ def _seendate_to_iso(s: str) -> str | None:
 def fetch_one(gd: GdeltDoc, commodity: str, kw: str, timespan: str) -> list[dict]:
     f = Filters(keyword=kw, timespan=timespan, num_records=NUM_RECORDS,
                 language="English")
-    for attempt in range(5):
+    for attempt in range(MAX_RETRIES):
         try:
             arts = gd.article_search(f)
             break
         except Exception as e:  # gdeltdoc.RateLimitError etc.
-            wait = 8 * (attempt + 1)
+            wait = RETRY_BASE * (attempt + 1)
             print(f"    {type(e).__name__} on {commodity}, retry in {wait}s",
                   file=sys.stderr)
             time.sleep(wait)
@@ -89,7 +96,7 @@ def run(timespan: str) -> dict:
         for a in fetch_one(gd, commodity, kw, timespan):
             m = merged.setdefault(a["url"], {**a, "tags": set()})
             m["tags"].add(commodity)
-        time.sleep(10)  # space queries — GDELT rate-limits bursts hard
+        time.sleep(QUERY_SLEEP)  # space queries — GDELT rate-limits bursts hard
 
     import json as _json
     rows = [{
