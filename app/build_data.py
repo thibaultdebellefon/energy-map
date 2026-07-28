@@ -10,6 +10,7 @@ built.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -24,6 +25,11 @@ import config  # noqa: E402
 import db  # noqa: E402
 from country_maps import ISO3_ALPHA3  # noqa: E402
 from routes_def import ROUTES  # noqa: E402
+
+# `import config` above loaded .env into os.environ. When a Supabase connection
+# string is set, build_data reads the raw tables from Supabase and writes the
+# assembled bundle to map_snapshot — so the map regenerates in Actions, off Mac.
+_SB = os.environ.get("SUPABASE_POOLER_URL") or os.environ.get("SUPABASE_DB_URL")
 
 PUBLIC = APP_DIR / "public"
 VENDOR = PUBLIC / "vendor"
@@ -361,7 +367,47 @@ def build_facilities(conn) -> list[dict]:
     return out
 
 
+class _PGConn:
+    """Adapter so build_bundle() runs against Supabase Postgres with the same
+    conn.execute(sql) -> name-addressable rows interface it uses for SQLite."""
+
+    def __init__(self, dsn):
+        import psycopg2
+        from psycopg2.extras import RealDictCursor
+        self._c = psycopg2.connect(dsn, sslmode="require", connect_timeout=25)
+        self._rd = RealDictCursor
+
+    def execute(self, sql, params=None):
+        cur = self._c.cursor(cursor_factory=self._rd)
+        cur.execute(sql, params)
+        return cur
+
+    def write_map_snapshot(self, bundle):
+        from psycopg2.extras import Json
+        cur = self._c.cursor()
+        cur.execute(
+            "insert into map_snapshot (commodity, data) values ('__all__', %s) "
+            "on conflict (commodity) do update set data = excluded.data, updated_at = now()",
+            (Json(bundle),))
+        self._c.commit()
+        cur.close()
+
+    def close(self):
+        self._c.close()
+
+
 def main() -> None:
+    if _SB:
+        print("Rebuilding map bundle from Supabase → map_snapshot")
+        conn = _PGConn(_SB)
+        bundle = build_bundle(conn)
+        conn.write_map_snapshot(bundle)
+        conn.close()
+        m = bundle["meta"]
+        print(f"  ✓ map_snapshot — {m['n_flows']} flows, {m['n_countries']} countries, "
+              f"{len(m['commodities'])} commodities, years {m['years']}")
+        return
+
     print("Vendoring static assets:")
     for dest, url in ASSETS.items():
         _download(dest, url)

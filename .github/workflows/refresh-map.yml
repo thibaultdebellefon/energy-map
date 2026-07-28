@@ -1,0 +1,36 @@
+name: Refresh map & companies
+
+# Regenerates the map_snapshot (trade flows + searoute maritime paths) and the
+# companies tables in Supabase — entirely in the cloud, off the local Mac.
+# Reads the raw tables already in Supabase and recomputes; no API keys needed.
+# Trade data is annual, so monthly + on-demand is plenty.
+on:
+  schedule:
+    - cron: "0 3 1 * *"   # 03:00 UTC on the 1st of each month
+  workflow_dispatch: {}
+
+concurrency:
+  group: refresh-map
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet psycopg2-binary searoute
+
+      - name: Rebuild companies → Supabase
+        run: python app/build_companies.py
+
+      - name: Rebuild map_snapshot → Supabase (trade flows + searoute)
+        run: python app/build_data.py

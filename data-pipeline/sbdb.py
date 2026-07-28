@@ -69,3 +69,61 @@ def upsert_prices(conn, rows: list[dict]) -> int:
         vals, page_size=1000)
     conn.commit()
     return len(rows)
+
+
+# --- raw map/production tables (so Comtrade/EIA/USGS fetchers can target Supabase) ---
+_FACILITY_COLS = ("id", "name", "type", "country_iso", "lat", "lon", "commodity",
+                  "operator_company", "production_volume", "production_year",
+                  "unit", "capacity", "status", "start_date", "photo_url",
+                  "photo_source", "source")
+
+
+def upsert_flows(conn, rows: list[dict]) -> int:
+    if not rows:
+        return 0
+    vals = [(r["reporter_iso"], r["partner_iso"], r["hs_code"], r["year"],
+             r.get("trade_value_usd"), r.get("quantity"), r.get("quantity_unit"),
+             r.get("flow_source", "direct")) for r in rows]
+    cur = conn.cursor()
+    execute_values(
+        cur,
+        "insert into export_flows (reporter_iso,partner_iso,hs_code,year,"
+        "trade_value_usd,quantity,quantity_unit,flow_source) values %s "
+        "on conflict (reporter_iso,partner_iso,hs_code,year,flow_source) do update set "
+        "trade_value_usd=excluded.trade_value_usd, quantity=excluded.quantity, "
+        "quantity_unit=excluded.quantity_unit",
+        vals, page_size=1000)
+    conn.commit()
+    return len(rows)
+
+
+def upsert_production(conn, rows: list[dict]) -> int:
+    if not rows:
+        return 0
+    vals = [(r["country_iso"], r["commodity"], r["year"], r.get("volume"),
+             r.get("unit"), r.get("source")) for r in rows]
+    cur = conn.cursor()
+    execute_values(
+        cur,
+        "insert into production (country_iso,commodity,year,volume,unit,source) values %s "
+        "on conflict (country_iso,commodity,year,source) do update set "
+        "volume=excluded.volume, unit=excluded.unit",
+        vals, page_size=1000)
+    conn.commit()
+    return len(rows)
+
+
+def upsert_facilities(conn, rows: list[dict]) -> int:
+    if not rows:
+        return 0
+    vals = [tuple(r.get(c) for c in _FACILITY_COLS) for r in rows]
+    updates = ", ".join(f"{c}=excluded.{c}" for c in _FACILITY_COLS
+                        if c not in ("source", "id"))
+    cur = conn.cursor()
+    execute_values(
+        cur,
+        f"insert into facility ({','.join(_FACILITY_COLS)}) values %s "
+        f"on conflict (source, id) do update set {updates}",
+        vals, page_size=1000)
+    conn.commit()
+    return len(rows)

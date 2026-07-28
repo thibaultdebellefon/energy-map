@@ -19,9 +19,56 @@ terminal, mine, smelter, office.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 PUBLIC = Path(__file__).resolve().parent / "public"
+
+
+def _load_env():
+    """Load .env locally so _SB is detected. In Actions the vars are already
+    in the environment (no .env file); setdefault never overrides them."""
+    p = Path(__file__).resolve().parent.parent / ".env"
+    if p.exists():
+        for line in p.read_text().splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k, v)
+
+
+_load_env()
+# When Supabase is configured, sync the curated companies straight into the DB
+# (companies / company_footprint / company_assets) instead of writing JSON.
+_SB = os.environ.get("SUPABASE_POOLER_URL") or os.environ.get("SUPABASE_DB_URL")
+
+
+def _sync_supabase(companies: list[dict]) -> None:
+    import psycopg2
+    conn = psycopg2.connect(_SB, sslmode="require", connect_timeout=25)
+    cur = conn.cursor()
+    cur.execute("truncate company_footprint, company_assets;")
+    for i, c in enumerate(companies):
+        cur.execute(
+            "insert into companies (id,name,type,hq,founded,employees,revenue,listing,"
+            "color,blurb,sort_order) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
+            "on conflict (id) do update set name=excluded.name, type=excluded.type, "
+            "hq=excluded.hq, founded=excluded.founded, employees=excluded.employees, "
+            "revenue=excluded.revenue, listing=excluded.listing, color=excluded.color, "
+            "blurb=excluded.blurb, sort_order=excluded.sort_order",
+            (c["id"], c["name"], c["type"], c["hq"], c["founded"], c["employees"],
+             c["revenue"], c["listing"], c["color"], c["blurb"], i))
+        for j, f in enumerate(c["footprint"]):
+            cur.execute("insert into company_footprint (company_id,commodity,role,"
+                        "presence,note,sort_order) values (%s,%s,%s,%s,%s,%s)",
+                        (c["id"], f["commodity"], f["role"], f["presence"], f.get("note", ""), j))
+        for j, a in enumerate(c["assets"]):
+            cur.execute("insert into company_assets (company_id,name,type,commodity,"
+                        "country,lat,lon,note,sort_order) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (c["id"], a["name"], a["type"], a["commodity"], a["country"],
+                         a["lat"], a["lon"], a.get("note", ""), j))
+    conn.commit()
+    conn.close()
 
 
 def A(name, type, commodity, country, lat, lon, note=""):
@@ -304,8 +351,12 @@ def build() -> dict:
 
 def main() -> None:
     data = build()
-    (PUBLIC / "companies.json").write_text(json.dumps(data, separators=(",", ":")))
     n_assets = sum(c["numAssets"] for c in data["companies"])
+    if _SB:
+        _sync_supabase(COMPANIES)
+        print(f"  ✓ companies → Supabase — {len(COMPANIES)} companies, {n_assets} assets")
+        return
+    (PUBLIC / "companies.json").write_text(json.dumps(data, separators=(",", ":")))
     print(f"  ✓ companies.json — {len(data['companies'])} companies, {n_assets} assets")
 
 
