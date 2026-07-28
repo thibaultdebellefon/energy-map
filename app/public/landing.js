@@ -15,9 +15,10 @@
     ).join("");
   }
 
-  // ---- prices → ticker + trading stat ----
-  fetch("prices.json").then((r) => r.json()).then((d) => {
-    const series = d.series || {};
+  // ---- prices → ticker + trading stat (live from Supabase) ----
+  SB.get("trading_series?select=commodity,points").then((rows) => {
+    const series = {};
+    rows.forEach((r) => { series[r.commodity] = r.points || []; });
     const priced = C.ORDER.filter((k) => (series[k] || []).length);
 
     const st = document.getElementById("stat-trading");
@@ -48,9 +49,9 @@
     }
   }).catch(() => {});
 
-  // ---- news → headline count ----
-  fetch("news.json").then((r) => r.json()).then((d) => {
-    const n = (d.articles || []).length;
+  // ---- news → headline count (live from Supabase) ----
+  SB.get("news?select=id").then((rows) => {
+    const n = rows.length;
     const el = document.getElementById("stat-news");
     if (el) el.innerHTML = `<b>${n}</b> headline${n === 1 ? "" : "s"} indexed <span class="go">→</span>`;
   }).catch(() => {});

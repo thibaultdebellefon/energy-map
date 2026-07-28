@@ -1128,7 +1128,8 @@
     let data, world;
     try {
       [data, world] = await Promise.all([
-        d3.json("data.json"), d3.json("world.geojson"),
+        SB.get("map_snapshot?commodity=eq.__all__&select=data").then((r) => r[0].data),
+        d3.json("world.geojson"),
       ]);
     } catch (e) {
       document.getElementById("loading").textContent =

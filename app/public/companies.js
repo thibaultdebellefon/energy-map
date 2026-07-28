@@ -233,8 +233,23 @@
     drawMap(current);
   }
 
-  Promise.all([d3.json("companies.json"), d3.json("world.geojson")]).then(([cd, w]) => {
-    companies = cd.companies || [];
+  // Live from Supabase: one embedded query pulls each company with its footprint
+  // and assets nested (PostgREST resource embedding via the FK relationships).
+  Promise.all([
+    SB.get("companies?select=id,name,type,hq,founded,employees,revenue,listing,color,blurb," +
+      "company_footprint(commodity,role,presence,note)," +
+      "company_assets(name,type,commodity,country,lat,lon,note)&order=sort_order"),
+    d3.json("world.geojson"),
+  ]).then(([cd, w]) => {
+    companies = (cd || []).map((c) => {
+      const assets = c.company_assets || [], footprint = c.company_footprint || [];
+      return Object.assign({}, c, {
+        assets: assets, footprint: footprint,
+        numAssets: assets.length,
+        numCountries: new Set(assets.map((a) => a.country)).size,
+        commodities: footprint.map((f) => f.commodity),
+      });
+    });
     companies.forEach((c) => { byId[c.id] = c; });
     world = w;
     features = (w.features || []).filter((f) => f.geometry);

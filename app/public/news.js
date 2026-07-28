@@ -143,13 +143,17 @@
     return [...seen.values()];
   }
 
-  fetch("news.json").then((r) => r.json()).then((d) => {
-    const sorted = (d.articles || []).slice().sort((a, b) =>
-      (b.date || "").localeCompare(a.date || ""));
-    articles = dedupe(sorted);
+  // Live from Supabase (already relevance-filtered at ingestion). Ordered newest
+  // first; dedupe() collapses syndicated near-duplicate titles.
+  SB.get("news?select=title,url,source,published_date,commodities_tags" +
+    "&order=published_date.desc&limit=1000").then((rows) => {
+    articles = dedupe(rows.map((r) => ({
+      title: r.title, url: r.url, source: r.source,
+      date: r.published_date, tags: r.commodities_tags || [],
+    })));
     render();
   }).catch(() => {
     document.getElementById("list").innerHTML =
-      '<div class="empty">Could not load news.json — run <code>python app/build_news_trading.py</code>.</div>';
+      '<div class="empty">Could not load the news feed from Supabase.</div>';
   });
 })();

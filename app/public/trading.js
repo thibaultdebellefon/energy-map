@@ -195,12 +195,20 @@
       .on("mouseleave", () => { hl.style("opacity", 0); hd.style("opacity", 0); tip.style.opacity = 0; });
   }
 
-  fetch("prices.json").then((r) => r.json()).then((d) => {
-    data = { series: d.series || {}, units: d.units || {}, sources: d.sources || {} };
+  // Live from Supabase: the trading_series view already picks one source per
+  // commodity and returns the full series as a [date, price] array.
+  SB.get("trading_series?select=commodity,unit,source,points").then((rows) => {
+    const series = {}, units = {}, sources = {};
+    rows.forEach((r) => {
+      series[r.commodity] = r.points || [];
+      units[r.commodity] = r.unit;
+      sources[r.commodity] = r.source;
+    });
+    data = { series, units, sources };
     if (!has(commodity)) commodity = C.ORDER.find(has) || "crude";
     renderWatchlist(); renderRanges(); draw();
     window.addEventListener("resize", draw);
   }).catch(() => {
-    document.getElementById("foot").textContent = "Could not load prices.json — run python app/build_news_trading.py";
+    document.getElementById("foot").textContent = "Could not load prices from Supabase";
   });
 })();
