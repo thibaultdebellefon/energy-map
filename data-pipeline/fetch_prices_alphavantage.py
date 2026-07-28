@@ -16,7 +16,7 @@ import urllib.parse
 import urllib.request
 
 import config
-import db
+import store as db
 
 API = "https://www.alphavantage.co/query"
 RATE_SLEEP = 15  # seconds between calls (free tier ~5/min)

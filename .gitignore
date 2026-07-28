@@ -24,6 +24,10 @@ venv/
 .vscode/
 .gstack/
 
-# NOTE: app/public/*.json, world.geojson and vendor/ ARE committed on purpose —
-# they are the static assets Vercel serves. news.json / prices.json are kept
-# fresh by the GitHub Actions "Refresh data" workflow (.github/workflows).
+# The frontend now reads its data LIVE from Supabase — these JSON files are just
+# local build artifacts, no longer served. world.geojson (base map) and vendor/
+# stay committed (static assets Vercel serves).
+app/public/data.json
+app/public/news.json
+app/public/prices.json
+app/public/companies.json

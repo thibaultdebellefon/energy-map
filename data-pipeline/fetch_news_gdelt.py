@@ -20,7 +20,8 @@ import time
 
 from gdeltdoc import Filters, GdeltDoc
 
-import db
+import news_relevance
+import store as db
 
 # Retry/pacing budget — tunable via env so CI can fail fast on GDELT throttling
 # while local runs stay patient. Defaults preserve the original behaviour.
@@ -99,17 +100,27 @@ def run(timespan: str) -> dict:
         time.sleep(QUERY_SLEEP)  # space queries — GDELT rate-limits bursts hard
 
     import json as _json
-    rows = [{
-        "id": hashlib.md5(u.encode()).hexdigest(), "title": m["title"], "url": u,
-        "source": m["source"], "published_date": m["published_date"],
-        "snippet": None, "commodities_tags": _json.dumps(sorted(m["tags"])),
-    } for u, m in merged.items() if m["title"]]
+    rows = []
+    for u, m in merged.items():
+        if not m["title"]:
+            continue
+        # Editorial relevance guard at ingestion (the frontend has no build-time
+        # filter anymore) — keep only market-relevant tags, drop off-topic items.
+        keep = news_relevance.relevant_tags(m["title"], sorted(m["tags"]))
+        if not keep:
+            continue
+        rows.append({
+            "id": hashlib.md5(u.encode()).hexdigest(), "title": m["title"], "url": u,
+            "source": m["source"], "published_date": m["published_date"],
+            "snippet": None, "commodities_tags": _json.dumps(keep),
+        })
 
     conn = db.get_connection()
     db.init_db(conn)
     written = db.upsert_news(conn, rows)
+    pruned = db.prune_news(conn, 30) if hasattr(db, "prune_news") else 0
     conn.close()
-    return {"articles": written, "queries": len(KEYWORDS)}
+    return {"articles": written, "pruned": pruned, "queries": len(KEYWORDS)}
 
 
 def main() -> None:

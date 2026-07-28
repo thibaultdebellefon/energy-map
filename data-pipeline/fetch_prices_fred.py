@@ -13,7 +13,7 @@ import csv
 import io
 import urllib.request
 
-import db
+import store as db
 
 CSV_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}"
 
