@@ -2,30 +2,33 @@
    Dark night-ocean stage; crude = sodium amber, LNG = methane cyan. */
 
 :root {
-  --bg:        #080B11;
-  --bg-2:      #0B0F17;
-  --ocean:     #0B131F;
-  --panel:     rgba(15, 21, 30, 0.86);
-  --land:      #1C2734;
-  --land-hi:   #33475C;
-  --border:    #223042;
-  --border-2:  #17212D;
-  --ink:       #EAF1F8;
-  --muted:     #7C8A9A;
-  --faint:     #4A5769;
+  /* violet-black data canvas — surfaces retuned to the new charte; the data
+     hues (amber = crude/export, cyan = LNG, violet-blue = import) are kept so
+     the map stays multi-colour and legible. */
+  --bg:        #0F0B18;
+  --bg-2:      #15101F;
+  --ocean:     #17111F;
+  --panel:     rgba(28, 22, 44, 0.90);
+  --land:      #2C2440;
+  --land-hi:   #4A3F66;
+  --border:    #2F2648;
+  --border-2:  #241C37;
+  --ink:       #EDE9F6;
+  --muted:     #968BAE;
+  --faint:     #675C80;
 
   --crude:     #F4A93C;
   --crude-hot: #FF6A2B;
   --lng:       #46D5E4;
   --lng-hot:   #12B6D4;
-  --imp:       #6C7BFF;   /* importers on the diverging net scale */
+  --imp:       #8A7BFF;   /* importers on the diverging net scale (violet-blue) */
 
   --r: 9px;
   --bar-h: 56px;
   --panel-w: 340px;
 
   --sans: "Inter", system-ui, -apple-system, sans-serif;
-  --disp: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --disp: "Inter", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
@@ -173,7 +176,7 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 
 /* ---------- Stage / map ---------- */
 .stage { grid-area: stage; position: relative; background:
-  radial-gradient(120% 120% at 60% 0%, #0e1826 0%, var(--bg) 62%); overflow: hidden; }
+  radial-gradient(120% 120% at 60% 0%, #221835 0%, var(--bg) 62%); overflow: hidden; }
 #map { width: 100%; height: 100%; display: block; cursor: grab; }
 #map:active { cursor: grabbing; }
 .sphere { fill: var(--ocean); stroke: var(--border-2); stroke-width: .6; }

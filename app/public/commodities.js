@@ -10,18 +10,18 @@
     "nickel", "rare_earths", "zinc", "tin", "manganese", "graphite"];
 
   const META = {
-    crude:       { label: "Crude oil",   short: "WTI",   color: "#F4A93C", cls: "energy" },
-    lng:         { label: "LNG",         short: "Asia",  color: "#46D5E4", cls: "energy" },
-    copper:      { label: "Copper",      short: "Cu",    color: "#E8794B", cls: "metal" },
-    aluminium:   { label: "Aluminium",   short: "Al",    color: "#9FB4C7", cls: "metal" },
-    cobalt:      { label: "Cobalt",      short: "Co",    color: "#4B7BEC", cls: "metal" },
-    lithium:     { label: "Lithium",     short: "Li",    color: "#B7E23F", cls: "metal" },
-    nickel:      { label: "Nickel",      short: "Ni",    color: "#5FD9A6", cls: "metal" },
-    rare_earths: { label: "Rare earths", short: "REE",   color: "#C77DFF", cls: "metal" },
-    zinc:        { label: "Zinc",        short: "Zn",    color: "#7FA8C9", cls: "metal" },
-    tin:         { label: "Tin",         short: "Sn",    color: "#C6CDD8", cls: "metal" },
-    manganese:   { label: "Manganese",   short: "Mn",    color: "#D96BA0", cls: "metal" },
-    graphite:    { label: "Graphite",    short: "C",     color: "#8B94A2", cls: "metal" },
+    crude:       { label: "Crude oil",   short: "WTI",   color: "#E08A1E", cls: "energy" },
+    lng:         { label: "LNG",         short: "Asia",  color: "#1CA3BE", cls: "energy" },
+    copper:      { label: "Copper",      short: "Cu",    color: "#CF6B33", cls: "metal" },
+    aluminium:   { label: "Aluminium",   short: "Al",    color: "#7C8CA6", cls: "metal" },
+    cobalt:      { label: "Cobalt",      short: "Co",    color: "#3B5BD9", cls: "metal" },
+    lithium:     { label: "Lithium",     short: "Li",    color: "#7FA01C", cls: "metal" },
+    nickel:      { label: "Nickel",      short: "Ni",    color: "#21A277", cls: "metal" },
+    rare_earths: { label: "Rare earths", short: "REE",   color: "#B0479E", cls: "metal" },
+    zinc:        { label: "Zinc",        short: "Zn",    color: "#5480AE", cls: "metal" },
+    tin:         { label: "Tin",         short: "Sn",    color: "#7E8AA0", cls: "metal" },
+    manganese:   { label: "Manganese",   short: "Mn",    color: "#C74E86", cls: "metal" },
+    graphite:    { label: "Graphite",    short: "C",     color: "#5A5E72", cls: "metal" },
   };
 
   const label = (k) => (META[k] && META[k].label) ||
