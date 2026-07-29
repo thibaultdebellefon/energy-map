@@ -114,6 +114,7 @@
     card.style.setProperty("--c", "#0A0A0A"); // monochrome chrome; data stays coloured
     const priv = c.listing === "Private";
     card.innerHTML =
+      (c.logo ? `<div class="co-brand"><img class="co-logo" alt="" src="${esc(c.logo)}" onerror="this.parentNode.remove()"></div>` : "") +
       `<div class="co-name"><span class="mono-tag">${esc(c.type)}</span><h2></h2></div>` +
       `<p class="co-blurb"></p><div class="co-meta">` +
       metaRow("HQ", esc(c.hq)) + metaRow("Founded", c.founded || "—") +
@@ -268,7 +269,7 @@
   }
 
   Promise.all([
-    SB.get("companies?select=id,name,type,hq,founded,employees,revenue,listing,color,blurb," +
+    SB.get("companies?select=id,name,type,hq,founded,employees,revenue,listing,color,blurb,logo," +
       "company_footprint(commodity,role,presence,note)," +
       "company_assets(name,type,commodity,country,lat,lon,note)&order=sort_order"),
     d3.json("world.geojson"),

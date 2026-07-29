@@ -70,7 +70,7 @@ create index if not exists ix_facility_commodity on facility (commodity);
 create table if not exists companies (
   id text primary key, name text, type text, hq text, founded integer,
   employees integer, revenue text, listing text, color text, blurb text,
-  sort_order integer);
+  sort_order integer, logo text);
 create table if not exists company_footprint (
   company_id text references companies(id) on delete cascade,
   commodity text, role text, presence integer, note text, sort_order integer);

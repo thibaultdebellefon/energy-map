@@ -51,13 +51,13 @@ def _sync_supabase(companies: list[dict]) -> None:
     for i, c in enumerate(companies):
         cur.execute(
             "insert into companies (id,name,type,hq,founded,employees,revenue,listing,"
-            "color,blurb,sort_order) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
+            "color,blurb,sort_order,logo) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
             "on conflict (id) do update set name=excluded.name, type=excluded.type, "
             "hq=excluded.hq, founded=excluded.founded, employees=excluded.employees, "
             "revenue=excluded.revenue, listing=excluded.listing, color=excluded.color, "
-            "blurb=excluded.blurb, sort_order=excluded.sort_order",
+            "blurb=excluded.blurb, sort_order=excluded.sort_order, logo=excluded.logo",
             (c["id"], c["name"], c["type"], c["hq"], c["founded"], c["employees"],
-             c["revenue"], c["listing"], c["color"], c["blurb"], i))
+             c["revenue"], c["listing"], c["color"], c["blurb"], i, c.get("logo")))
         for j, f in enumerate(c["footprint"]):
             cur.execute("insert into company_footprint (company_id,commodity,role,"
                         "presence,note,sort_order) values (%s,%s,%s,%s,%s,%s)",
@@ -341,6 +341,14 @@ COMPANIES = [
 _EXTRA = Path(__file__).resolve().parent / "companies_extra.json"
 if _EXTRA.exists():
     COMPANIES = COMPANIES + json.loads(_EXTRA.read_text())
+
+# Official brand logos (Wikidata P154 / favicon fallback), keyed by company id.
+# Kept in a data file so they survive the monthly rebuild.
+_LOGOS = Path(__file__).resolve().parent / "company_logos.json"
+if _LOGOS.exists():
+    _logo_map = json.loads(_LOGOS.read_text())
+    for _c in COMPANIES:
+        _c["logo"] = _logo_map.get(_c["id"])
 
 
 def build() -> dict:

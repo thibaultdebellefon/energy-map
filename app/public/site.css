@@ -437,6 +437,10 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
 .co-card { border: 1px solid var(--border); border-left: 3px solid var(--c);
   border-radius: var(--r); padding: 18px 18px 16px; background: var(--panel);
   box-shadow: var(--shadow-sm); }
+.co-brand { display: flex; align-items: center; min-height: 34px; margin-bottom: 14px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.co-logo { max-height: 34px; max-width: 170px; width: auto; object-fit: contain;
+  filter: grayscale(1) contrast(1.05); }
 .co-name .mono-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
   text-transform: uppercase; color: var(--c); }
 .co-name h2 { font-family: var(--disp); font-size: 26px; font-weight: 600; margin: 5px 0 0;
