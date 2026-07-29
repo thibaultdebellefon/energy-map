@@ -11,14 +11,37 @@
 <link rel="stylesheet" href="site.css" />
 </head>
 <body>
-<main class="companies">
-  <aside class="co-panel">
-    <div class="co-panel-head">
-      <p class="eyebrow" style="margin:0">Companies</p>
-      <span class="co-sub" id="roster-count"></span>
+<!-- Welcome / discovery screen -->
+<section class="co-welcome" id="welcome" hidden>
+  <div class="co-welcome-in">
+    <p class="eyebrow">Companies · <span id="roster-count"></span></p>
+    <h1 class="co-welcome-h">Which company's infrastructure would you like to discover?</h1>
+    <div class="co-searchbox big">
+      <span class="co-search-ic" aria-hidden="true">⌕</span>
+      <input id="welcome-search" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Search a company — Aramco, Shell, Glencore…" />
+      <div class="co-results" id="welcome-results"></div>
     </div>
-    <div class="co-pick" id="picker"></div>
+    <div class="co-quick-lbl">Popular</div>
+    <div class="co-quick" id="welcome-quick"></div>
+  </div>
+</section>
+
+<!-- Company view -->
+<main class="companies" id="company-view" hidden>
+  <aside class="co-panel">
+    <div class="co-switch">
+      <div class="co-searchbox">
+        <span class="co-search-ic" aria-hidden="true">⌕</span>
+        <input id="co-search" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Search or switch company…" />
+        <div class="co-results" id="co-dropdown"></div>
+      </div>
+      <button class="co-home" id="welcome-back" title="Back to all companies">All</button>
+    </div>
     <div class="co-profile" id="profile"></div>
+    <div class="co-suggest-lbl">More to explore</div>
+    <div class="co-suggest" id="co-suggest"></div>
   </aside>
   <section class="co-map">
     <svg id="cmap"></svg>

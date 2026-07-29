@@ -30,6 +30,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }  /* beat class-level display:grid/flex */
 /* Terminal-grade numerals: digits share a fixed advance so prices line up. */
 .mono, .ticker, .tk, .wl, .price-now, .stats-strip, .axis text, .news-count,
 .scard .stat, .scard .ic .no, .foot-note, .wl .rt, .chip .ct, .site-comm {
@@ -459,6 +460,62 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
   background: color-mix(in srgb, var(--c) 22%, transparent); }
 .co-pop .chip2 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
 .co-pop .pop-note { font-size: 11.5px; color: #B0B0B0; line-height: 1.45; }
+
+/* --- welcome / discovery screen --- */
+.co-welcome { height: calc(100vh - var(--nav-h)); display: flex; align-items: center;
+  justify-content: center; padding: 24px;
+  background: radial-gradient(90% 70% at 50% -10%, #F4F4F4 0%, rgba(255,255,255,0) 55%), var(--bg); }
+.co-welcome-in { width: 100%; max-width: 720px; text-align: center; animation: rise .6s .05s both; }
+.co-welcome-in .eyebrow { justify-content: center; }
+.co-welcome-h { font-family: var(--disp); font-weight: 400; font-size: clamp(30px, 4.4vw, 52px);
+  line-height: 1.04; letter-spacing: -.02em; margin: 6px auto 30px; max-width: 16ch; }
+
+/* search box (shared: big on welcome, compact in the panel) */
+.co-searchbox { position: relative; display: flex; align-items: center; }
+.co-searchbox .co-search-ic { position: absolute; left: 18px; font-size: 20px; color: var(--faint); pointer-events: none; }
+.co-searchbox input { width: 100%; font-family: var(--sans); font-size: 15px; color: var(--ink);
+  background: #fff; border: 1px solid var(--border-2); border-radius: 16px;
+  padding: 14px 16px 14px 46px; outline: none; box-shadow: var(--shadow-sm);
+  transition: border-color .15s, box-shadow .15s; }
+.co-searchbox input:focus { border-color: var(--ink); box-shadow: var(--shadow); }
+.co-searchbox input::placeholder { color: var(--faint); }
+.co-searchbox.big input { font-size: 17px; padding: 18px 18px 18px 52px; border-radius: 18px; }
+.co-searchbox.big .co-search-ic { font-size: 24px; }
+
+.co-results { position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 30;
+  background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden auto;
+  max-height: 340px; box-shadow: var(--shadow); display: none; text-align: left; }
+.co-results.open { display: block; }
+.co-res { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: none; border: none; border-bottom: 1px solid var(--border); cursor: pointer;
+  padding: 11px 16px; transition: background .12s; }
+.co-res:last-child { border-bottom: none; }
+.co-res:hover { background: #F5F5F5; }
+.co-res .d { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.co-res .rn { font-size: 14px; color: var(--ink); font-weight: 500; }
+.co-res .rt { margin-left: auto; font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .04em; }
+.co-nores { padding: 16px; color: var(--muted); font-size: 13px; }
+
+.co-quick-lbl, .co-suggest-lbl { font-family: var(--sans); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--faint); margin: 26px 0 12px; }
+.co-quick { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.co-quick-chip, .co-sug-chip { display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink);
+  background: #fff; border: 1px solid var(--border-2); border-radius: 999px; padding: 9px 15px;
+  transition: border-color .14s, transform .14s, box-shadow .14s; }
+.co-quick-chip:hover, .co-sug-chip:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.co-quick-chip .d, .co-sug-chip .d { width: 8px; height: 8px; border-radius: 50%; }
+
+/* panel switcher */
+.co-switch { display: flex; gap: 8px; margin-bottom: 18px; }
+.co-switch .co-searchbox { flex: 1; }
+.co-home { flex: none; font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  color: var(--ink); background: #fff; border: 1px solid var(--border-2); border-radius: 14px;
+  padding: 0 16px; cursor: pointer; transition: border-color .14s; }
+.co-home:hover { border-color: var(--ink); }
+.co-suggest-lbl { margin: 24px 0 10px; }
+.co-suggest { display: flex; flex-wrap: wrap; gap: 7px; }
+.co-suggest .co-sug-chip { font-size: 12px; padding: 7px 12px; }
 
 @media (max-width: 900px) {
   .companies { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
