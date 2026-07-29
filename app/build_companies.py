@@ -335,6 +335,13 @@ COMPANIES = [
     },
 ]
 
+# Agent-researched extras (national oil companies + diversified miners), kept as
+# a committed JSON data file so the roster stays exhaustive without a giant
+# literal. Merged into the curated list above.
+_EXTRA = Path(__file__).resolve().parent / "companies_extra.json"
+if _EXTRA.exists():
+    COMPANIES = COMPANIES + json.loads(_EXTRA.read_text())
+
 
 def build() -> dict:
     out = []

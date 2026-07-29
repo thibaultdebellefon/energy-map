@@ -1,0 +1,2226 @@
+[
+ {
+  "id": "adnoc",
+  "name": "ADNOC",
+  "type": "National oil company",
+  "hq": "Abu Dhabi · United Arab Emirates",
+  "founded": 1971,
+  "employees": 50000,
+  "revenue": "$60B",
+  "listing": "State-owned",
+  "color": "#00833E",
+  "blurb": "ADNOC is Abu Dhabi's state-owned integrated energy group, operating the emirate's onshore and offshore crude fields, the giant Ruwais refining and petrochemical complex, and Das Island LNG facilities.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 95,
+    "note": "Operates ~4 million bpd capacity across onshore and offshore Abu Dhabi concessions, one of the world's largest proven reserve bases"
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 20,
+    "note": "Das Island LNG plant has produced liquefied natural gas since 1977, supplying long-term contracts to Asian buyers"
+   }
+  ],
+  "assets": [
+   {
+    "name": "ADNOC Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.4764,
+    "lon": 54.3705,
+    "note": "Corniche-area headquarters tower overseeing ADNOC Group's upstream, downstream and trading operations"
+   },
+   {
+    "name": "Bab Oil Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 23.65,
+    "lon": 53.6333,
+    "note": "Major onshore field operated via ADNOC Onshore, producing light crude that feeds the Murban blend"
+   },
+   {
+    "name": "Bu Hasa Oil Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 23.5,
+    "lon": 53.3667,
+    "note": "Discovered 1962; one of ADNOC Onshore's largest producing fields with capacity around 600,000 bpd"
+   },
+   {
+    "name": "Asab Oil Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 23.4667,
+    "lon": 53.7167,
+    "note": "Onshore field contributing to the Murban crude stream, operated by ADNOC Onshore"
+   },
+   {
+    "name": "Sahil Oil Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 23.45,
+    "lon": 53.85,
+    "note": "Onshore concession field in the Bab/Murban producing complex"
+   },
+   {
+    "name": "Upper Zakum Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 25.0333,
+    "lon": 53.2833,
+    "note": "One of the world's largest offshore fields, operated by ADNOC Offshore with Upper Zakum production capacity targeted above 1 million bpd"
+   },
+   {
+    "name": "Lower Zakum Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.85,
+    "lon": 53.15,
+    "note": "Offshore field operated by ADNOC Offshore, producing Upper Zakum/Umm Shaif-grade crude"
+   },
+   {
+    "name": "Umm Shaif Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 25.1167,
+    "lon": 53.1,
+    "note": "Legacy offshore field with proven reserves near 3.9 billion barrels, capacity around 300,000 bpd"
+   },
+   {
+    "name": "Satah Offshore Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.9333,
+    "lon": 53.0,
+    "note": "Smaller offshore producing field within the ADNOC Offshore concession"
+   },
+   {
+    "name": "Das Island Crude Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 25.15,
+    "lon": 52.8667,
+    "note": "Historic offshore crude processing, storage and export hub since the 1960s, handling Umm Shaif and Zakum crude"
+   },
+   {
+    "name": "Das Island LNG Plant",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "United Arab Emirates",
+    "lat": 25.15,
+    "lon": 52.8667,
+    "note": "ADNOC LNG's liquefaction plant, operating since 1977, shipping LNG mainly to Japanese and Asian buyers"
+   },
+   {
+    "name": "Zirku Island Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.8667,
+    "lon": 53.0667,
+    "note": "Offshore island terminal processing and exporting crude from nearby ADNOC Offshore fields"
+   },
+   {
+    "name": "Ruwais Refinery Complex",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.1167,
+    "lon": 52.7333,
+    "note": "One of the world's largest refining complexes with combined capacity over 900,000 bpd, integrated with Borouge petrochemicals"
+   },
+   {
+    "name": "Jebel Dhanna Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 24.1833,
+    "lon": 52.6167,
+    "note": "Main onshore crude export terminal near Ruwais serving Murban crude loadings"
+   },
+   {
+    "name": "Fujairah Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "United Arab Emirates",
+    "lat": 25.1667,
+    "lon": 56.3667,
+    "note": "Terminus of the Habshan-Fujairah pipeline, allowing crude exports bypassing the Strait of Hormuz"
+   }
+  ]
+ },
+ {
+  "id": "aramco",
+  "name": "Saudi Aramco",
+  "type": "National oil company",
+  "hq": "Dhahran · Saudi Arabia",
+  "founded": 1933,
+  "employees": 75000,
+  "revenue": "$446B",
+  "listing": "Tadawul: 2222",
+  "color": "#00A651",
+  "blurb": "Saudi Aramco is the world's largest integrated oil and gas company, producing crude at unmatched scale from giant onshore and offshore fields such as Ghawar and Safaniya while expanding downstream refining and building a new international LNG portfolio.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 100,
+    "note": "World's top crude producer/exporter, sustainable capacity ~12 mb/d across onshore and offshore giant fields"
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 10,
+    "note": "Building an LNG position via equity stakes in Rio Grande LNG (US) and the MidOcean Energy portfolio rather than domestic liquefaction"
+   }
+  ],
+  "assets": [
+   {
+    "name": "Aramco Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 26.29,
+    "lon": 50.15,
+    "note": "Corporate headquarters and integrated operations center, Dhahran"
+   },
+   {
+    "name": "Ghawar Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 25.433,
+    "lon": 49.6,
+    "note": "World's largest onshore oil field; ~3.8-5 mb/d sustained capacity"
+   },
+   {
+    "name": "Safaniya Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 28.0,
+    "lon": 48.8,
+    "note": "World's largest offshore oil field, ~1.2 mb/d capacity, Arabian Gulf"
+   },
+   {
+    "name": "Manifa Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 27.817,
+    "lon": 49.167,
+    "note": "Offshore field redeveloped 2013 with causeways/artificial islands, ~0.9 mb/d"
+   },
+   {
+    "name": "Zuluf Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 27.367,
+    "lon": 49.167,
+    "note": "Major offshore field, ~0.6+ mb/d capacity, Arabian Gulf"
+   },
+   {
+    "name": "Marjan Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 27.5,
+    "lon": 49.3,
+    "note": "Offshore field undergoing major expansion, targeting ~1.2 mb/d plus gas/condensate"
+   },
+   {
+    "name": "Shaybah Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 22.533,
+    "lon": 53.883,
+    "note": "Remote Rub' al Khali (Empty Quarter) field, ~1 mb/d of high-quality Arab Extra Light crude"
+   },
+   {
+    "name": "Khurais Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 25.167,
+    "lon": 48.0,
+    "note": "Major onshore field, ~1.2 mb/d capacity"
+   },
+   {
+    "name": "Qatif Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 26.55,
+    "lon": 49.983,
+    "note": "Onshore/nearshore field producing oil and associated gas near Jubail"
+   },
+   {
+    "name": "Berri Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 27.0,
+    "lon": 49.5,
+    "note": "Onshore/offshore field feeding Berri gas plant and Ras Tanura"
+   },
+   {
+    "name": "Abqaiq Plants",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 25.933,
+    "lon": 49.667,
+    "note": "World's largest crude oil stabilization and processing complex, ~7 mb/d throughput capacity"
+   },
+   {
+    "name": "Ras Tanura Refinery & Terminal",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 26.644,
+    "lon": 50.165,
+    "note": "~550 kb/d refinery plus one of the world's largest crude export terminals"
+   },
+   {
+    "name": "Ju'aymah Crude & NGL Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 26.967,
+    "lon": 49.65,
+    "note": "Major Gulf export terminal for crude, NGL and refined products adjacent to Ras Tanura"
+   },
+   {
+    "name": "SATORP Refinery (Jubail)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 27.033,
+    "lon": 49.617,
+    "note": "~440 kb/d joint-venture refinery with TotalEnergies at Jubail"
+   },
+   {
+    "name": "SAMREF/Yanbu Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 24.083,
+    "lon": 38.067,
+    "note": "Red Sea export refinery complex, ~400+ kb/d combined capacity"
+   },
+   {
+    "name": "Jazan Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Saudi Arabia",
+    "lat": 16.9,
+    "lon": 42.583,
+    "note": "~400 kb/d refinery integrated with IGCC and terminal on the Red Sea"
+   },
+   {
+    "name": "Rio Grande LNG (equity stake)",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "United States",
+    "lat": 26.033,
+    "lon": -97.15,
+    "note": "Equity stake and 20-year offtake in NextDecade's Rio Grande LNG export terminal, Brownsville, Texas"
+   }
+  ]
+ },
+ {
+  "id": "bhp",
+  "name": "BHP",
+  "type": "Diversified miner",
+  "hq": "Melbourne · Australia",
+  "founded": 1885,
+  "employees": 91304,
+  "revenue": "$51B",
+  "listing": "ASX: BHP / NYSE: BHP",
+  "color": "#E85D25",
+  "blurb": "The world's largest miner by market capitalisation, dominated by iron ore and coal but running a growing tracked-commodity copper business plus a nickel unit currently in care and maintenance.",
+  "footprint": [
+   {
+    "commodity": "copper",
+    "role": "Mining",
+    "presence": 70,
+    "note": "Escondida (world's largest copper mine), Spence and the Copper South Australia hub (Olympic Dam, Carrapateena, Prominent Hill) plus a minority stake in Antamina, Peru."
+   },
+   {
+    "commodity": "nickel",
+    "role": "Mining",
+    "presence": 15,
+    "note": "Nickel West (Mt Keith, Leinster, Kalgoorlie smelter, Kwinana refinery) placed into care and maintenance in late 2024 amid the nickel price downturn, with a review due by 2027."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Escondida",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Chile",
+    "lat": -24.27,
+    "lon": -69.07,
+    "note": "World's largest copper mine by output; BHP holds 57.5% and operates it, located in the Atacama Desert, Antofagasta Region."
+   },
+   {
+    "name": "Spence",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Chile",
+    "lat": -22.7944,
+    "lon": -69.2533,
+    "note": "Wholly-owned open-pit copper mine near Sierra Gorda, Antofagasta Region, expanded via the Spence Growth Option."
+   },
+   {
+    "name": "Olympic Dam",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Australia",
+    "lat": -30.44,
+    "lon": 136.8731,
+    "note": "Underground copper-uranium-gold-silver mine and integrated smelter/refinery in South Australia; BHP is investing to lift throughput."
+   },
+   {
+    "name": "Carrapateena",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Australia",
+    "lat": -31.2483,
+    "lon": 137.4872,
+    "note": "Underground copper-gold mine in South Australia's Gawler Craton, acquired via the 2023 OZ Minerals takeover; part of Copper South Australia."
+   },
+   {
+    "name": "Prominent Hill",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Australia",
+    "lat": -29.7194,
+    "lon": 135.5833,
+    "note": "Underground/open-pit copper-gold mine in South Australia, also acquired with OZ Minerals in 2023."
+   },
+   {
+    "name": "Oak Dam",
+    "type": "office",
+    "commodity": "copper",
+    "country": "Australia",
+    "lat": -30.85,
+    "lon": 137.35,
+    "note": "Deep IOCG copper-gold deposit ~65km south-east of Olympic Dam; under evaluation as a potential fourth South Australian copper mine."
+   },
+   {
+    "name": "Antamina",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Peru",
+    "lat": -9.5372,
+    "lon": -77.0611,
+    "note": "Large copper-zinc mine in Ancash; BHP holds a 33.75% non-operated joint-venture stake alongside Glencore, Teck and Mitsubishi."
+   },
+   {
+    "name": "Mount Keith",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Australia",
+    "lat": -27.2133,
+    "lon": 120.5517,
+    "note": "Large open-pit nickel sulphide mine and concentrator in WA's Northern Goldfields; on care and maintenance since late 2024."
+   },
+   {
+    "name": "Leinster Nickel Operations",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Australia",
+    "lat": -27.85,
+    "lon": 120.7,
+    "note": "Underground/open-pit nickel mine and concentrator; part of Nickel West, suspended in the 2024 care-and-maintenance decision."
+   },
+   {
+    "name": "Kalgoorlie Nickel Smelter",
+    "type": "office",
+    "commodity": "nickel",
+    "country": "Australia",
+    "lat": -30.8736,
+    "lon": 121.4841,
+    "note": "Nickel matte smelter at Feysville near Kalgoorlie; idled alongside the rest of Nickel West."
+   },
+   {
+    "name": "Kwinana Nickel Refinery",
+    "type": "office",
+    "commodity": "nickel",
+    "country": "Australia",
+    "lat": -32.2496,
+    "lon": 115.7665,
+    "note": "Nickel sulphate/briquette refinery south of Perth; on care and maintenance and under strategic review since October 2024."
+   }
+  ]
+ },
+ {
+  "id": "equinor",
+  "name": "Equinor",
+  "type": "Supermajor",
+  "hq": "Stavanger · Norway",
+  "founded": 1972,
+  "employees": 23000,
+  "revenue": "$91B",
+  "listing": "OSE: EQNR / NYSE: EQNR",
+  "color": "#E30613",
+  "blurb": "Norwegian state-controlled energy major dominating North Sea oil and gas production, with Europe's largest gas export system and growing Gulf of Mexico and Brazil offshore positions.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 80,
+    "note": "Operator of Norway's largest fields (Johan Sverdrup, Troll, Oseberg) plus offshore Brazil and non-operated US Gulf of Mexico interests."
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 20,
+    "note": "Sole operator of Snøhvit/Melkøya, Norway's only LNG export plant, alongside pipeline gas exports from the Norwegian Continental Shelf."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Equinor Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 58.97,
+    "lon": 5.7331,
+    "note": "Global headquarters in Forus, Stavanger, overseeing Equinor's Norwegian Continental Shelf and international operations."
+   },
+   {
+    "name": "Johan Sverdrup",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 59.2167,
+    "lon": 2.4833,
+    "note": "Giant North Sea field producing roughly a third of Norway's oil output; one of the lowest carbon-intensity oil fields globally, powered from shore."
+   },
+   {
+    "name": "Troll",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 60.6444,
+    "lon": 3.7167,
+    "note": "Largest gas field on the Norwegian shelf with a substantial oil rim (Troll Oil), operated by Equinor in the North Sea."
+   },
+   {
+    "name": "Oseberg",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 60.4964,
+    "lon": 2.8339,
+    "note": "Long-running North Sea oil and gas field complex with multiple platforms, operated by Equinor since the 1980s."
+   },
+   {
+    "name": "Gullfaks",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 61.2,
+    "lon": 2.2667,
+    "note": "Mature North Sea oil field with three integrated platforms, one of Norway's original giant discoveries operated by Equinor."
+   },
+   {
+    "name": "Snorre",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 61.45,
+    "lon": 2.15,
+    "note": "Northern North Sea oil field developed via Snorre A and B platforms, undergoing late-life redevelopment for extended production."
+   },
+   {
+    "name": "Johan Castberg",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 72.4667,
+    "lon": 20.2833,
+    "note": "Equinor's flagship Barents Sea development on an FPSO, opening a new oil province in Arctic Norway; started production in 2024."
+   },
+   {
+    "name": "Rosebank",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United Kingdom",
+    "lat": 60.75,
+    "lon": -3.63,
+    "note": "UK's largest undeveloped oil field, west of Shetland, operated by Equinor with an FPSO development underway."
+   },
+   {
+    "name": "Snøhvit / Melkøya LNG",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Norway",
+    "lat": 70.6746,
+    "lon": 23.6321,
+    "note": "Melkøya liquefaction plant at Hammerfest processes gas piped from the Snøhvit field in the Barents Sea; Norway's only LNG export facility."
+   },
+   {
+    "name": "Mongstad Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Norway",
+    "lat": 60.8089,
+    "lon": 5.0369,
+    "note": "Norway's largest refinery near Bergen, processing North Sea crude and serving as a major crude oil terminal and logistics hub."
+   },
+   {
+    "name": "Kalundborg Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Denmark",
+    "lat": 55.6867,
+    "lon": 11.0904,
+    "note": "Equinor's Danish refinery on Zealand, supplying fuel products across Scandinavia from North Sea and imported crude."
+   },
+   {
+    "name": "Caesar-Tonga (Gulf of Mexico)",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "United States",
+    "lat": 26.858,
+    "lon": -91.33,
+    "note": "Deepwater Green Canyon oil development in the US Gulf of Mexico in which Equinor holds a non-operated working interest."
+   },
+   {
+    "name": "Marcellus Shale (Appalachia)",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "United States",
+    "lat": 41.7,
+    "lon": -77.0,
+    "note": "Equinor's onshore shale gas acreage in Pennsylvania, a non-operated feedstock position feeding US domestic and export gas markets."
+   },
+   {
+    "name": "Bacalhau",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -24.65,
+    "lon": -41.9,
+    "note": "Equinor-operated pre-salt oil development in the Santos Basin using a large-capacity FPSO, one of Brazil's biggest new offshore projects."
+   },
+   {
+    "name": "Peregrino",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.5,
+    "lon": -40.03,
+    "note": "Heavy oil field in the Campos Basin operated by Equinor via two fixed platforms, expanded with the Peregrino Phase 2 project."
+   }
+  ]
+ },
+ {
+  "id": "gazprom",
+  "name": "Gazprom",
+  "type": "National oil company",
+  "hq": "Saint Petersburg · Russia",
+  "founded": 1989,
+  "employees": 498000,
+  "revenue": "$91B",
+  "listing": "MOEX: GAZP",
+  "color": "#1A5CA8",
+  "blurb": "Russian state-controlled energy giant and the world's largest natural gas producer, operating giant Siberian gas fields, export pipelines, and LNG terminals alongside its Gazprom Neft crude oil arm.",
+  "footprint": [
+   {
+    "commodity": "lng",
+    "role": "Integrated",
+    "presence": 100,
+    "note": "natural gas + LNG"
+   },
+   {
+    "commodity": "crude",
+    "role": "Upstream",
+    "presence": 35,
+    "note": "Gazprom Neft"
+   }
+  ],
+  "assets": [
+   {
+    "name": "Urengoy Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 66.0,
+    "lon": 76.7,
+    "note": "One of the world's largest natural gas fields, Yamalo-Nenets Okrug"
+   },
+   {
+    "name": "Yamburg Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 68.36,
+    "lon": 75.29,
+    "note": "Giant gas field on the Tazovsky Peninsula"
+   },
+   {
+    "name": "Bovanenkovo Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 70.27,
+    "lon": 68.12,
+    "note": "Flagship Yamal Peninsula gas field feeding the Bovanenkovo-Ukhta pipeline"
+   },
+   {
+    "name": "Zapolyarnoye Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 67.65,
+    "lon": 78.83,
+    "note": "Major producing gas field near Novy Urengoy"
+   },
+   {
+    "name": "Chayandinskoye Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 60.93,
+    "lon": 117.4,
+    "note": "Eastern Siberia field, primary resource base for Power of Siberia pipeline"
+   },
+   {
+    "name": "Kovyktinskoye Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 54.9,
+    "lon": 105.9,
+    "note": "Irkutsk Oblast gas condensate field supplying Power of Siberia"
+   },
+   {
+    "name": "Portovaya LNG",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 60.34,
+    "lon": 28.55,
+    "note": "Small-scale LNG plant and compressor station near Vyborg, Nord Stream landfall"
+   },
+   {
+    "name": "Prigorodnoye LNG (Sakhalin-2)",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 46.62,
+    "lon": 142.72,
+    "note": "Russia's first LNG plant, Gazprom majority stake alongside Shell/Mitsui/Mitsubishi"
+   },
+   {
+    "name": "Ust-Luga Gas Complex",
+    "type": "terminal",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 59.67,
+    "lon": 28.33,
+    "note": "Baltic Sea export and gas processing/LNG complex"
+   },
+   {
+    "name": "Atamanskaya Compressor Station",
+    "type": "terminal",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 50.27,
+    "lon": 127.52,
+    "note": "Power of Siberia border crossing point into China near Blagoveshchensk"
+   },
+   {
+    "name": "Russkaya Compressor Station",
+    "type": "terminal",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 44.87,
+    "lon": 37.55,
+    "note": "TurkStream pipeline landfall and compressor station near Anapa"
+   },
+   {
+    "name": "Lakhta Center (HQ)",
+    "type": "office",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 59.99,
+    "lon": 30.18,
+    "note": "Gazprom global headquarters tower in Saint Petersburg"
+   },
+   {
+    "name": "Prirazlomnoye Platform",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 69.25,
+    "lon": 57.33,
+    "note": "Gazprom Neft's Arctic offshore oil platform in the Pechora Sea"
+   },
+   {
+    "name": "Novoportovskoye Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 70.13,
+    "lon": 72.6,
+    "note": "Gazprom Neft oil and gas condensate field on the Yamal Peninsula"
+   },
+   {
+    "name": "Moscow Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 55.67,
+    "lon": 37.82,
+    "note": "Gazprom Neft's Kapotnya refinery serving the Moscow region"
+   },
+   {
+    "name": "Omsk Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 54.97,
+    "lon": 73.37,
+    "note": "Gazprom Neft's largest refinery, one of Russia's biggest by capacity"
+   }
+  ]
+ },
+ {
+  "id": "pemex",
+  "name": "Pemex",
+  "type": "National oil company",
+  "hq": "Mexico City · Mexico",
+  "founded": 1938,
+  "employees": 128616,
+  "revenue": "$97B",
+  "listing": "State-owned",
+  "color": "#006341",
+  "blurb": "Petroleos Mexicanos is Mexico's state-owned oil and gas company, operating the country's crude production, refining, and export infrastructure from the Bay of Campeche to the Gulf coast refineries.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 95,
+    "note": "Dominant upstream, midstream and downstream crude operator in Mexico; roughly 1.6-1.9 million bbl/d of liquids output."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Torre Ejecutiva Pemex (HQ)",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 19.4419,
+    "lon": -99.1467,
+    "note": "Corporate headquarters tower in the Colonia Narvarte area of Mexico City."
+   },
+   {
+    "name": "Ku-Maloob-Zaap Complex",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 19.3833,
+    "lon": -92.15,
+    "note": "Largest producing field cluster in Mexico, Bay of Campeche; heavy Maya crude, historically over 800,000 bbl/d."
+   },
+   {
+    "name": "Cantarell Complex",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 19.4167,
+    "lon": -92.3333,
+    "note": "Historic supergiant offshore field in the Bay of Campeche, now in steep decline from peak output of roughly 2.1 million bbl/d."
+   },
+   {
+    "name": "Zama Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 19.85,
+    "lon": -92.15,
+    "note": "Shallow-water discovery in the Sureste Basin off Tabasco; Pemex-operated unitized development with Talos Energy."
+   },
+   {
+    "name": "Ayatsil-Tekel Complex",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 19.6667,
+    "lon": -92.05,
+    "note": "Extra-heavy offshore crude development in the Bay of Campeche."
+   },
+   {
+    "name": "Chicontepec Basin",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 20.85,
+    "lon": -97.95,
+    "note": "Large onshore, low-permeability light crude field complex spanning Veracruz and Puebla."
+   },
+   {
+    "name": "Poza Rica Onshore Fields",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 20.5333,
+    "lon": -97.4667,
+    "note": "Legacy onshore crude and gas producing area in northern Veracruz."
+   },
+   {
+    "name": "Salina Cruz Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 16.1833,
+    "lon": -95.2,
+    "note": "330,000 bbl/d capacity refinery on the Pacific coast of Oaxaca and key export/import hub."
+   },
+   {
+    "name": "Tula Refinery (Miguel Hidalgo)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 20.0667,
+    "lon": -99.3333,
+    "note": "340,000 bbl/d refinery in Hidalgo state, one of Pemex's largest domestic fuel producers."
+   },
+   {
+    "name": "Cadereyta Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 25.5833,
+    "lon": -100.0,
+    "note": "275,000 bbl/d refinery near Monterrey, Nuevo Leon."
+   },
+   {
+    "name": "Olmeca Refinery (Dos Bocas)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 18.4167,
+    "lon": -93.2,
+    "note": "New 340,000 bbl/d refinery at Dos Bocas, Tabasco, flagship project of the current administration, started up 2023-2025."
+   },
+   {
+    "name": "Minatitlan Refinery (Lazaro Cardenas)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 18.0167,
+    "lon": -94.5333,
+    "note": "185,000 bbl/d refinery in Veracruz near the Coatzacoalcos river."
+   },
+   {
+    "name": "Madero Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 22.2833,
+    "lon": -97.8333,
+    "note": "152,000 bbl/d refinery at Ciudad Madero, Tamaulipas, one of Pemex's oldest facilities."
+   },
+   {
+    "name": "Pajaritos Petrochemical & Export Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 18.1167,
+    "lon": -94.4,
+    "note": "Petrochemical complex and marine export terminal at Coatzacoalcos, Veracruz."
+   },
+   {
+    "name": "Dos Bocas Marine Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 18.4333,
+    "lon": -93.2,
+    "note": "Major crude oil export terminal at Dos Bocas, Tabasco, loading Maya and Isthmus crude for export."
+   },
+   {
+    "name": "Cayo Arcas Marine Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Mexico",
+    "lat": 20.2,
+    "lon": -91.9833,
+    "note": "Offshore single-point mooring export terminal in the Bay of Campeche loading crude from Cantarell/KMZ onto tankers."
+   },
+   {
+    "name": "Nuevo Pemex Gas Processing Complex",
+    "type": "terminal",
+    "commodity": "lng",
+    "country": "Mexico",
+    "lat": 17.9167,
+    "lon": -93.4333,
+    "note": "Largest natural gas processing center in Mexico, located in Tabasco near the onshore Reforma-Comalcalco fields."
+   }
+  ]
+ },
+ {
+  "id": "petrobras",
+  "name": "Petrobras",
+  "type": "National oil company",
+  "hq": "Rio de Janeiro · Brazil",
+  "founded": 1953,
+  "employees": 50687,
+  "revenue": "$89B",
+  "listing": "B3: PETR3 / NYSE: PBR",
+  "color": "#008542",
+  "blurb": "Brazil's state-controlled oil major and world leader in ultra-deepwater pre-salt production, operating giant offshore fields in the Santos and Campos basins alongside a nationwide refining and LNG-import network.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 95,
+    "note": "deep-water pre-salt operator; ~2.9 million boe/d output, ~70% from pre-salt"
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 20,
+    "note": "chartered FSRUs regasify imported LNG at Bahia, Guanabara Bay and Pecém to balance seasonal gas demand"
+   }
+  ],
+  "assets": [
+   {
+    "name": "HQ - Edificio Petrobras",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.9068,
+    "lon": -43.1778,
+    "note": "corporate headquarters, downtown Rio de Janeiro"
+   },
+   {
+    "name": "Tupi/Lula Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -25.4,
+    "lon": -43.1,
+    "note": "flagship Santos Basin pre-salt giant, ~300km offshore, discovered 2006, water depth ~2,200m"
+   },
+   {
+    "name": "Buzios Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -24.9,
+    "lon": -42.3,
+    "note": "largest producing field in Brazil, Santos Basin pre-salt, multiple FPSOs (P-74 to P-78)"
+   },
+   {
+    "name": "Sepia Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -25.75,
+    "lon": -43.55,
+    "note": "Santos Basin pre-salt field, FPSO Carioca capacity 180,000 bbl/d"
+   },
+   {
+    "name": "Mero Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -25.25,
+    "lon": -42.8,
+    "note": "Libra block, Santos Basin pre-salt, phased FPSO development (Mero 1-4)"
+   },
+   {
+    "name": "Marlim Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.02,
+    "lon": -40.3,
+    "note": "Campos Basin post-salt giant, producing since 1991, revitalized with FPSO Marlim 1"
+   },
+   {
+    "name": "Roncador Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.0,
+    "lon": -40.1,
+    "note": "Campos Basin deep-water field, P-52/P-55/P-62 platforms"
+   },
+   {
+    "name": "Albacora Leste Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.48,
+    "lon": -40.28,
+    "note": "Campos Basin field, P-50 and P-32 platforms"
+   },
+   {
+    "name": "REDUC Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.643,
+    "lon": -43.311,
+    "note": "Duque de Caxias, Rio de Janeiro state; ~242,000 bbl/d capacity"
+   },
+   {
+    "name": "RLAM Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -12.606,
+    "lon": -38.667,
+    "note": "Refinaria Landulpho Alves, Sao Francisco do Conde, Bahia; ~333,000 bbl/d"
+   },
+   {
+    "name": "REPLAN Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.76,
+    "lon": -47.139,
+    "note": "Paulinia, Sao Paulo state; largest Petrobras refinery, ~434,000 bbl/d"
+   },
+   {
+    "name": "RNEST Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -8.379,
+    "lon": -35.063,
+    "note": "Refinaria Abreu e Lima, Ipojuca, Pernambuco; ~260,000 bbl/d, heavy crude focus"
+   },
+   {
+    "name": "REVAP Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -23.19,
+    "lon": -45.86,
+    "note": "Sao Jose dos Campos, Sao Paulo state; ~251,000 bbl/d"
+   },
+   {
+    "name": "Bahia LNG Terminal",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Brazil",
+    "lat": -12.74,
+    "lon": -38.62,
+    "note": "FSRU-based regasification terminal, Baia de Todos os Santos, near Salvador"
+   },
+   {
+    "name": "Guanabara Bay LNG Terminal",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Brazil",
+    "lat": -22.8,
+    "lon": -43.13,
+    "note": "FSRU regasification terminal serving Rio de Janeiro thermal fleet"
+   },
+   {
+    "name": "Pecem LNG Terminal",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Brazil",
+    "lat": -3.542,
+    "lon": -38.826,
+    "note": "FSRU regasification terminal, Ceara, northeast Brazil"
+   },
+   {
+    "name": "Marlim/Campos Basin Terminal (DTSE)",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Brazil",
+    "lat": -22.4,
+    "lon": -41.0,
+    "note": "Sao Joao da Barra offshore crude transfer and storage terminal serving Campos Basin output"
+   }
+  ]
+ },
+ {
+  "id": "petrochina",
+  "name": "PetroChina (CNPC)",
+  "type": "National oil company",
+  "hq": "Beijing · China",
+  "founded": 1999,
+  "employees": 439000,
+  "revenue": "$484B",
+  "listing": "SSE: 601857 / NYSE: PTR",
+  "color": "#C8102E",
+  "blurb": "China's largest integrated oil and gas producer, the listed flagship of state parent CNPC, spanning giant domestic oilfields, nationwide refining, and pipeline/LNG import infrastructure plus overseas upstream equity.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 90,
+    "note": "Dominant Chinese upstream producer (Daqing, Changqing, Tarim, Xinjiang) plus nationwide refining and overseas E&P equity"
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 45,
+    "note": "Domestic gas fields, coastal LNG import terminals (Rudong, Tangshan) and overseas LNG equity (Yamal)"
+   }
+  ],
+  "assets": [
+   {
+    "name": "CNPC / PetroChina Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 39.9139,
+    "lon": 116.4293,
+    "note": "Group and listed-company head office, Dongcheng District, Beijing"
+   },
+   {
+    "name": "Daqing Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 46.5886,
+    "lon": 125.0298,
+    "note": "China's largest legacy oilfield, producing since 1960, Heilongjiang province"
+   },
+   {
+    "name": "Changqing Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 37.5,
+    "lon": 108.5,
+    "note": "Largest current producer by output, Ordos Basin, spans Shaanxi/Gansu/Ningxia/Inner Mongolia"
+   },
+   {
+    "name": "Tarim Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 41.7597,
+    "lon": 86.1469,
+    "note": "Major tight-oil and gas complex in Tarim Basin, Xinjiang, HQ at Korla"
+   },
+   {
+    "name": "Xinjiang Oilfield (Karamay)",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 45.6001,
+    "lon": 84.8879,
+    "note": "Historic oilfield at Karamay, Junggar Basin, Xinjiang"
+   },
+   {
+    "name": "Dalian Petrochemical Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 38.93,
+    "lon": 121.55,
+    "note": "Major coastal refining and petrochemical complex, Liaoning province"
+   },
+   {
+    "name": "Lanzhou Petrochemical Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 36.1,
+    "lon": 103.68,
+    "note": "CNPC's oldest major refinery/petrochemical base, Gansu province"
+   },
+   {
+    "name": "Dushanzi Petrochemical Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 44.323,
+    "lon": 84.897,
+    "note": "Integrated refining complex at Karamay, Xinjiang, expanded with Kazakhstan-China pipeline crude"
+   },
+   {
+    "name": "Jilin Petrochemical Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "China",
+    "lat": 43.84,
+    "lon": 126.56,
+    "note": "Refining and chemicals complex on the Songhua River, Jilin province"
+   },
+   {
+    "name": "Rudong LNG Terminal",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "China",
+    "lat": 32.5292,
+    "lon": 121.428,
+    "note": "PetroChina Jiangsu LNG import terminal on Yangguang Island, Nantong, one of China's largest receiving terminals"
+   },
+   {
+    "name": "Tangshan (Caofeidian) LNG Terminal",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "China",
+    "lat": 38.87,
+    "lon": 118.45,
+    "note": "PetroChina LNG import terminal at Caofeidian, Hebei, supplying Beijing-Tianjin-Hebei region"
+   },
+   {
+    "name": "Puguang Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "China",
+    "lat": 31.42,
+    "lon": 107.85,
+    "note": "Major sour gas field in Sichuan Basin, Dazhou, feeding domestic gas grid"
+   },
+   {
+    "name": "PetroKazakhstan – Kumkol Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Kazakhstan",
+    "lat": 45.85,
+    "lon": 65.5,
+    "note": "CNPC-controlled PetroKazakhstan's core producing field, Kyzylorda region"
+   },
+   {
+    "name": "Sudan Block 1/2/4 – Heglig/Unity Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Sudan",
+    "lat": 9.78,
+    "lon": 29.49,
+    "note": "CNPC-developed Nile Blend crude field near Heglig, operated via Greater Nile Petroleum Operating Company"
+   },
+   {
+    "name": "Agadem Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Niger",
+    "lat": 16.97,
+    "lon": 12.03,
+    "note": "CNPC-operated field in Diffa Region, linked by 1,950 km export pipeline to Benin's coast"
+   },
+   {
+    "name": "Chad Block H / N'Djamena Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Chad",
+    "lat": 12.2,
+    "lon": 15.05,
+    "note": "CNPC upstream block and 60%-owned refinery serving N'Djamena"
+   },
+   {
+    "name": "Halfaya Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Iraq",
+    "lat": 32.15,
+    "lon": 47.2,
+    "note": "CNPC-led supergiant oilfield development in Missan Province"
+   },
+   {
+    "name": "Yamal LNG Project",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Russia",
+    "lat": 71.2601,
+    "lon": 72.0533,
+    "note": "CNPC holds 20% equity stake in Novatek-led Arctic LNG export plant at Sabetta"
+   }
+  ]
+ },
+ {
+  "id": "qatarenergy",
+  "name": "QatarEnergy",
+  "type": "National oil company",
+  "hq": "Doha · Qatar",
+  "founded": 1974,
+  "employees": 30739,
+  "revenue": "$49.4B",
+  "listing": "State-owned",
+  "color": "#6E1E3C",
+  "blurb": "Qatar's state hydrocarbon company and the world's largest LNG exporter, built on the giant North Field non-associated gas reservoir.",
+  "footprint": [
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 100,
+    "note": "Sole developer of the North Field, feeding ~77 Mtpa of existing Ras Laffan trains with NFE/NFS expansion lifting capacity to 142 Mtpa by 2030."
+   },
+   {
+    "commodity": "crude",
+    "role": "Upstream",
+    "presence": 55,
+    "note": "Operates/co-operates onshore Dukhan and offshore Al Shaheen, Bul Hanine, Maydan Mahzam and Idd El Shargi fields; ~1.2-1.4 million bpd of crude and condensate."
+   }
+  ],
+  "assets": [
+   {
+    "name": "QatarEnergy Headquarters",
+    "type": "office",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.2854,
+    "lon": 51.531,
+    "note": "Corporate headquarters in Doha overseeing all upstream, LNG, refining and petrochemical operations."
+   },
+   {
+    "name": "North Field",
+    "type": "offshore",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.75,
+    "lon": 52.2,
+    "note": "World's largest non-associated natural gas field (shared with Iran's South Pars); sole feedstock source for all Qatari LNG trains."
+   },
+   {
+    "name": "Ras Laffan LNG Complex (Qatargas/RasGas trains)",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.8545,
+    "lon": 51.5367,
+    "note": "Fourteen legacy liquefaction trains (former Qatargas 1-4 and RasGas 1-3, merged 2018) totaling ~77 Mtpa capacity."
+   },
+   {
+    "name": "North Field East (NFE) Expansion",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.9,
+    "lon": 51.58,
+    "note": "Four new 8 Mtpa mega-trains under construction at Ras Laffan; first train targeted for startup in 2026."
+   },
+   {
+    "name": "North Field South (NFS) Expansion",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.87,
+    "lon": 51.56,
+    "note": "Two additional mega-trains adding 16 Mtpa, part of the push toward 142 Mtpa total capacity by 2030."
+   },
+   {
+    "name": "Laffan Refinery (1 & 2)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.82,
+    "lon": 51.57,
+    "note": "Condensate refinery complex at Ras Laffan processing North Field condensate, combined capacity of roughly 292,000 bpd."
+   },
+   {
+    "name": "Ras Laffan Port",
+    "type": "terminal",
+    "commodity": "lng",
+    "country": "Qatar",
+    "lat": 25.9167,
+    "lon": 51.5667,
+    "note": "World's largest man-made harbour; principal LNG, condensate and refined products export gateway."
+   },
+   {
+    "name": "Mesaieed Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 24.9892,
+    "lon": 51.58,
+    "note": "Original refinery complex established 1954 south of Doha, capacity around 85,000 bpd."
+   },
+   {
+    "name": "Mesaieed Industrial City & Port",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 24.99,
+    "lon": 51.62,
+    "note": "Major industrial city and export terminal handling crude, condensate, NGLs and petrochemicals."
+   },
+   {
+    "name": "Dukhan Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.4194,
+    "lon": 50.7922,
+    "note": "Qatar's largest onshore oil and gas field, in production since 1940 along the west coast."
+   },
+   {
+    "name": "Al Shaheen Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 26.605,
+    "lon": 51.932,
+    "note": "Qatar's largest offshore oil field (~300,000 bopd, ~45% of national crude output), operated by North Oil Company."
+   },
+   {
+    "name": "Bul Hanine Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.5,
+    "lon": 52.65,
+    "note": "Country's largest offshore field by original reserves, on production since 1972, undergoing full redevelopment."
+   },
+   {
+    "name": "Maydan Mahzam Oil Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.6,
+    "lon": 52.55,
+    "note": "Offshore field on production since 1962; oil and condensate piped to the Halul Island terminal."
+   },
+   {
+    "name": "Halul Island Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.675,
+    "lon": 52.4114,
+    "note": "Central offshore storage, processing and loading terminal serving Qatar's eastern offshore oil fields."
+   },
+   {
+    "name": "Idd El Shargi Field",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Qatar",
+    "lat": 25.9333,
+    "lon": 52.2833,
+    "note": "Offshore oil field redeveloped with new jack-up production platforms to arrest natural decline."
+   },
+   {
+    "name": "Golden Pass LNG",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "United States",
+    "lat": 29.783,
+    "lon": -93.97,
+    "note": "Flagship international LNG project on the Texas Gulf Coast, a joint venture with ExxonMobil with ~18 Mtpa capacity."
+   }
+  ]
+ },
+ {
+  "id": "riotinto",
+  "name": "Rio Tinto",
+  "type": "Diversified miner",
+  "hq": "London · United Kingdom",
+  "founded": 1873,
+  "employees": 57000,
+  "revenue": "$54B",
+  "listing": "LSE / ASX / NYSE: RIO",
+  "color": "#B31942",
+  "blurb": "Anglo-Australian diversified miner and one of the world's largest producers of aluminium and copper, with an early-stage push into battery-metals lithium.",
+  "footprint": [
+   {
+    "commodity": "copper",
+    "role": "Mining",
+    "presence": 55,
+    "note": "Kennecott (Utah), Oyu Tolgoi (Mongolia), Escondida stake (Chile), Resolution project (Arizona)"
+   },
+   {
+    "commodity": "aluminium",
+    "role": "Mining + Refining + Smelting",
+    "presence": 90,
+    "note": "Fully integrated bauxite (Weipa, Gove) → alumina (Gladstone) → aluminium (Canada, Iceland, Australia) chain; world's #2 aluminium producer"
+   },
+   {
+    "commodity": "lithium",
+    "role": "Mining",
+    "presence": 15,
+    "note": "First lithium carbonate shipped from Rincon (Argentina) starter plant in 2025; Jadar (Serbia) project on care and maintenance"
+   }
+  ],
+  "assets": [
+   {
+    "name": "Kennecott (Bingham Canyon)",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "United States",
+    "lat": 40.5219,
+    "lon": -112.1483,
+    "note": "Historic open-pit copper mine near Salt Lake City, Utah, with on-site smelter and refinery"
+   },
+   {
+    "name": "Oyu Tolgoi",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Mongolia",
+    "lat": 43.0125,
+    "lon": 106.8564,
+    "note": "Major open-pit and underground copper-gold mine in the South Gobi desert"
+   },
+   {
+    "name": "Escondida (30% stake)",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Chile",
+    "lat": -24.2667,
+    "lon": -69.0667,
+    "note": "World's largest copper mine, BHP-operated; Rio Tinto holds a 30% non-operated interest"
+   },
+   {
+    "name": "Resolution Copper (project)",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "United States",
+    "lat": 33.2951,
+    "lon": -111.0937,
+    "note": "Deep underground copper project near Superior, Arizona; 55/45 JV with BHP, still in permitting"
+   },
+   {
+    "name": "Weipa Bauxite Mines",
+    "type": "mine",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -12.6833,
+    "lon": 141.8667,
+    "note": "Major bauxite mining operations (Andoom, East Weipa) on Cape York Peninsula, Queensland"
+   },
+   {
+    "name": "Gove Bauxite Mine",
+    "type": "mine",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -12.1928,
+    "lon": 136.7739,
+    "note": "Bauxite mine near Nhulunbuy, Northern Territory"
+   },
+   {
+    "name": "Gladstone Alumina Refineries (QAL & Yarwun)",
+    "type": "refinery",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -23.8433,
+    "lon": 151.2554,
+    "note": "Queensland Alumina Ltd and Yarwun refineries converting Weipa/Gove bauxite into alumina"
+   },
+   {
+    "name": "Boyne Island Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -23.95,
+    "lon": 151.3167,
+    "note": "Aluminium smelter near Gladstone, Queensland, majority Rio Tinto-owned"
+   },
+   {
+    "name": "Tomago Aluminium Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -32.8167,
+    "lon": 151.7333,
+    "note": "Aluminium smelter near Newcastle, New South Wales; Rio Tinto majority stake and operator"
+   },
+   {
+    "name": "ISAL Straumsvik Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Iceland",
+    "lat": 64.045,
+    "lon": -21.967,
+    "note": "Aluminium smelter powered by Icelandic hydro/geothermal electricity near Reykjavik"
+   },
+   {
+    "name": "Kitimat Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Canada",
+    "lat": 54.0524,
+    "lon": -128.6461,
+    "note": "Modernized aluminium smelter in British Columbia powered by the Kemano hydro facility"
+   },
+   {
+    "name": "Alma Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Canada",
+    "lat": 48.5501,
+    "lon": -71.6497,
+    "note": "Aluminium smelter in Saguenay–Lac-Saint-Jean, Quebec"
+   },
+   {
+    "name": "Arvida / AP60 Smelter",
+    "type": "smelter",
+    "commodity": "aluminium",
+    "country": "Canada",
+    "lat": 48.4229,
+    "lon": -71.2419,
+    "note": "Next-generation AP60 aluminium smelter technology center in Jonquière, Quebec"
+   },
+   {
+    "name": "Rincon Lithium Project",
+    "type": "mine",
+    "commodity": "lithium",
+    "country": "Argentina",
+    "lat": -24.6833,
+    "lon": -66.9667,
+    "note": "Salar del Rincón brine lithium project in Salta province; starter plant shipped first lithium carbonate in 2025, expansion targeting ~60kt/y by 2028"
+   },
+   {
+    "name": "Jadar Lithium Project",
+    "type": "mine",
+    "commodity": "lithium",
+    "country": "Serbia",
+    "lat": 44.2,
+    "lon": 19.4833,
+    "note": "High-grade jadarite lithium-borate deposit near Loznica; construction suspended and placed in care and maintenance in late 2025 after local opposition"
+   },
+   {
+    "name": "London Head Office",
+    "type": "office",
+    "commodity": "aluminium",
+    "country": "United Kingdom",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "note": "Primary global headquarters (dual-listed structure) at 6 St James's Square"
+   },
+   {
+    "name": "Melbourne Head Office",
+    "type": "office",
+    "commodity": "aluminium",
+    "country": "Australia",
+    "lat": -37.8136,
+    "lon": 144.9631,
+    "note": "Second headquarters under Rio Tinto's dual-listed company structure"
+   }
+  ]
+ },
+ {
+  "id": "rosneft",
+  "name": "Rosneft",
+  "type": "National oil company",
+  "hq": "Moscow · Russia",
+  "founded": 1995,
+  "employees": 356000,
+  "revenue": "$111.2B",
+  "listing": "MOEX: ROSN",
+  "color": "#FFCC00",
+  "blurb": "Russia's largest oil company and one of the world's biggest listed crude producers, controlling giant West Siberian fields, the Arctic Vostok Oil megaproject, and a nationwide refining and export network.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 100,
+    "note": "State-controlled major spanning upstream production, refining and export terminals across Russia; ~40% of national oil output."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Rosneft Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 55.7415,
+    "lon": 37.6156,
+    "note": "Corporate headquarters on Sofiyskaya Embankment, Moscow, opposite the Kremlin."
+   },
+   {
+    "name": "Samotlor Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 60.95,
+    "lon": 76.5333,
+    "note": "One of the world's largest oilfields, near Nizhnevartovsk, West Siberia; in production since 1969, operated by Samotlorneftegaz."
+   },
+   {
+    "name": "Priobskoye Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 61.0167,
+    "lon": 71.9333,
+    "note": "Giant West Siberian field near Khanty-Mansiysk; one of Rosneft's top current producers, split into north and south license blocks."
+   },
+   {
+    "name": "Yuganskneftegaz (Mamontovskoye/Priobskoye hub)",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 61.0975,
+    "lon": 72.6614,
+    "note": "Core West Siberian production subsidiary based in Nefteyugansk, Khanty-Mansi AO; Rosneft's largest upstream unit by volume."
+   },
+   {
+    "name": "Vankor Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 67.7553,
+    "lon": 83.4614,
+    "note": "Major Arctic-zone field in Krasnoyarsk Krai anchoring the Vankor cluster and feeding the Vostok Oil pipeline system."
+   },
+   {
+    "name": "Payakha Field (Vostok Oil)",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 71.5,
+    "lon": 82.0,
+    "note": "Flagship low-sulfur field of the Vostok Oil Arctic megaproject on the Taymyr Peninsula; pilot production started 2024."
+   },
+   {
+    "name": "Bukhta Sever Export Terminal (Vostok Oil)",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 71.9,
+    "lon": 82.65,
+    "note": "New Arctic coast oil-loading terminal on the Kara Sea built to export Vostok Oil crude via the Northern Sea Route."
+   },
+   {
+    "name": "Purneftegaz Fields",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 64.4463,
+    "lon": 76.4805,
+    "note": "Cluster of legacy fields near Gubkinsky, Yamalo-Nenets AO, operated by subsidiary RN-Purneftegaz."
+   },
+   {
+    "name": "Verkhnechonskoye Field",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 60.9333,
+    "lon": 108.6167,
+    "note": "Major Eastern Siberia field in Irkutsk Oblast feeding the ESPO pipeline; operated via Verkhnechonskneftegaz."
+   },
+   {
+    "name": "Tuapse Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 44.0958,
+    "lon": 39.0728,
+    "note": "Black Sea coast refinery in Krasnodar Krai, modernized to raise Nelson complexity and light-product yield."
+   },
+   {
+    "name": "Novokuibyshevsk Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 53.1058,
+    "lon": 49.9506,
+    "note": "Volga-region refinery in Samara Oblast, part of the Samara refining hub."
+   },
+   {
+    "name": "Ryazan Refinery (RNPK)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 54.58,
+    "lon": 39.85,
+    "note": "One of Russia's largest refineries, near Ryazan south of Moscow, majority-owned by Rosneft."
+   },
+   {
+    "name": "Komsomolsk Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 50.5765,
+    "lon": 136.9558,
+    "note": "Far East refinery at Komsomolsk-on-Amur, Khabarovsk Krai, supplying Pacific and domestic markets."
+   },
+   {
+    "name": "Achinsk Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 56.2705,
+    "lon": 90.4956,
+    "note": "Siberian refinery in Krasnoyarsk Krai serving regional fuel demand."
+   },
+   {
+    "name": "Angarsk Petrochemical Company (ANHK)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 52.544,
+    "lon": 103.8887,
+    "note": "Integrated refining and petrochemical complex in Irkutsk Oblast, Eastern Siberia."
+   },
+   {
+    "name": "Novorossiysk Export Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 44.7239,
+    "lon": 37.7684,
+    "note": "Key Black Sea crude and product export terminal used by Rosneft for Mediterranean-bound cargoes."
+   },
+   {
+    "name": "De-Kastri Oil Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 51.47,
+    "lon": 140.78,
+    "note": "Pacific coast export terminal in Khabarovsk Krai loading crude from the Sakhalin-1 project, in which Rosneft holds a stake."
+   },
+   {
+    "name": "Sakhalin-1 (Chayvo Field)",
+    "type": "offshore",
+    "commodity": "crude",
+    "country": "Russia",
+    "lat": 53.2333,
+    "lon": 143.2,
+    "note": "Offshore/onshore field off northeast Sakhalin Island; Rosneft became lead operator after Exxon's 2022 exit."
+   }
+  ]
+ },
+ {
+  "id": "sonatrach",
+  "name": "Sonatrach",
+  "type": "National oil company",
+  "hq": "Algiers · Algeria",
+  "founded": 1963,
+  "employees": 120000,
+  "revenue": "$77B",
+  "listing": "State-owned",
+  "color": "#D21034",
+  "blurb": "Algeria's state oil and gas company and Africa's largest producer, operating the country's giant Saharan crude fields and pioneering LNG export complexes on the Mediterranean coast.",
+  "footprint": [
+   {
+    "commodity": "crude",
+    "role": "Integrated",
+    "presence": 100,
+    "note": "Operates Algeria's major onshore crude fields, pipelines, refineries and export terminals."
+   },
+   {
+    "commodity": "lng",
+    "role": "LNG",
+    "presence": 95,
+    "note": "World's first LNG exporter (1964); operates Hassi R'Mel gas hub and Arzew/Skikda liquefaction complexes."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Hassi Messaoud Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 31.7,
+    "lon": 6.05,
+    "note": "Algeria's largest crude oil field, discovered 1956, anchor of national crude output."
+   },
+   {
+    "name": "Rhourde El Baguel Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 31.74,
+    "lon": 6.9,
+    "note": "Major giant crude field in the Sahara, on stream since the 1960s."
+   },
+   {
+    "name": "Hassi Berkine Sud Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 30.79,
+    "lon": 6.71,
+    "note": "Large crude field developed with international partners, key production growth driver."
+   },
+   {
+    "name": "Ourhoud Oilfield",
+    "type": "oilfield",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 30.38,
+    "lon": 6.83,
+    "note": "Major crude field in the Berkine Basin, one of Algeria's largest producing assets."
+   },
+   {
+    "name": "Hassi R'Mel Gas Field",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 32.93,
+    "lon": 3.28,
+    "note": "Algeria's giant gas field and the hub feeding domestic pipelines and LNG export trains."
+   },
+   {
+    "name": "In Salah Gas Complex",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 27.19,
+    "lon": 2.46,
+    "note": "Major Saharan gas development supplying regional and export pipeline networks."
+   },
+   {
+    "name": "In Amenas Gas Complex",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 28.06,
+    "lon": 9.64,
+    "note": "Large gas and condensate complex near the Libyan border, feeding export pipelines."
+   },
+   {
+    "name": "Tin Fouye Tabankort (TFT)",
+    "type": "oilfield",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 27.7,
+    "lon": 9.35,
+    "note": "Gas and condensate field cluster in the Illizi province."
+   },
+   {
+    "name": "Arzew GL1Z/GL2Z LNG Complex",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 35.85,
+    "lon": -0.28,
+    "note": "Bethioua liquefaction complex including GL1Z, one of the world's first LNG plants (1964)."
+   },
+   {
+    "name": "Skikda GL1K LNG Complex",
+    "type": "lng",
+    "commodity": "lng",
+    "country": "Algeria",
+    "lat": 36.88,
+    "lon": 6.9,
+    "note": "Rebuilt Mediterranean coast liquefaction complex, key Europe-facing LNG export hub."
+   },
+   {
+    "name": "Arzew Refinery (RA1Z)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 35.83,
+    "lon": -0.32,
+    "note": "Major coastal refining complex processing Saharan crude for domestic and export markets."
+   },
+   {
+    "name": "Skikda Refinery",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 36.88,
+    "lon": 6.91,
+    "note": "Large Mediterranean refinery paired with the Skikda export and LNG terminal."
+   },
+   {
+    "name": "Algiers Refinery (Sidi Arcine)",
+    "type": "refinery",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 36.65,
+    "lon": 3.08,
+    "note": "Refinery serving the Algiers metropolitan fuel market."
+   },
+   {
+    "name": "Arzew Export Terminal (Bethioua)",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 35.82,
+    "lon": -0.27,
+    "note": "Principal crude and LNG/LPG export terminal on the western Mediterranean coast."
+   },
+   {
+    "name": "Skikda Export Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 36.89,
+    "lon": 6.9,
+    "note": "Crude oil and LNG export terminal serving pipeline flows from the Sahara."
+   },
+   {
+    "name": "Bejaia Export Terminal",
+    "type": "terminal",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 36.75,
+    "lon": 5.08,
+    "note": "Crude export terminal at the terminus of the Hassi Messaoud-Bejaia pipeline."
+   },
+   {
+    "name": "Sonatrach Headquarters",
+    "type": "office",
+    "commodity": "crude",
+    "country": "Algeria",
+    "lat": 36.73,
+    "lon": 3.05,
+    "note": "Corporate headquarters in Hydra, Algiers, overseeing upstream, midstream and downstream operations."
+   }
+  ]
+ },
+ {
+  "id": "vale",
+  "name": "Vale",
+  "type": "Diversified miner",
+  "hq": "Rio de Janeiro · Brazil",
+  "founded": 1942,
+  "employees": 64000,
+  "revenue": "$38B",
+  "listing": "B3: VALE3 / NYSE: VALE",
+  "color": "#008562",
+  "blurb": "Brazilian mining giant and the world's second-largest nickel producer, with base-metals operations spanning Canada, Brazil and Indonesia alongside its dominant iron ore business.",
+  "footprint": [
+   {
+    "commodity": "nickel",
+    "role": "Mining + Smelting + Refining",
+    "presence": 70,
+    "note": "Vale Base Metals: Sudbury and Voisey's Bay (Canada), Onça Puma (Brazil), PT Vale Indonesia (Sorowako); world #2 nickel producer."
+   },
+   {
+    "commodity": "copper",
+    "role": "Mining",
+    "presence": 40,
+    "note": "Salobo and Sossego mines in Carajás, Brazil, plus copper concentrate as a by-product of Sudbury nickel ore in Canada."
+   },
+   {
+    "commodity": "cobalt",
+    "role": "Refining (by-product)",
+    "presence": 18,
+    "note": "Recovered as a by-product from Voisey's Bay/Sudbury nickel ore at the Long Harbour hydrometallurgical refinery, Newfoundland."
+   },
+   {
+    "commodity": "manganese",
+    "role": "Mining",
+    "presence": 30,
+    "note": "Azul mine in the Carajás mineral province, Pará, one of the world's largest manganese ore operations."
+   }
+  ],
+  "assets": [
+   {
+    "name": "Vale Global Headquarters",
+    "type": "office",
+    "commodity": "nickel",
+    "country": "Brazil",
+    "lat": -22.9484,
+    "lon": -43.1789,
+    "note": "Corporate HQ on Praia de Botafogo, Rio de Janeiro, overseeing base metals and iron ore businesses worldwide."
+   },
+   {
+    "name": "Sudbury Operations (Copper Cliff Complex)",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Canada",
+    "lat": 46.4695,
+    "lon": -81.2453,
+    "note": "Integrated nickel mining and smelting complex in Ontario; among Vale's oldest and largest nickel operations, active since 1918."
+   },
+   {
+    "name": "Copper Cliff Copper Refinery",
+    "type": "refinery",
+    "commodity": "copper",
+    "country": "Canada",
+    "lat": 46.475,
+    "lon": -81.235,
+    "note": "Refines copper recovered as a by-product of Sudbury nickel-copper ore into cathode."
+   },
+   {
+    "name": "Voisey's Bay Mine",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Canada",
+    "lat": 56.383,
+    "lon": -61.883,
+    "note": "Underground nickel-copper-cobalt mine in Labrador; concentrate is shipped to Long Harbour for processing."
+   },
+   {
+    "name": "Long Harbour Nickel Processing Plant",
+    "type": "refinery",
+    "commodity": "cobalt",
+    "country": "Canada",
+    "lat": 47.4242,
+    "lon": -53.8167,
+    "note": "Hydrometallurgical refinery in Newfoundland processing Voisey's Bay concentrate into finished nickel, copper and cobalt."
+   },
+   {
+    "name": "Thompson Mine",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Canada",
+    "lat": 55.7433,
+    "lon": -97.8558,
+    "note": "Underground nickel mine in Manitoba; ore is processed at the on-site mill after Vale closed the Thompson smelter/refinery in 2010."
+   },
+   {
+    "name": "Onça Puma Mine & Ferronickel Plant",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Brazil",
+    "lat": -6.75,
+    "lon": -51.05,
+    "note": "Lateritic nickel mine and ferronickel smelting plant near Ourilândia do Norte, Pará."
+   },
+   {
+    "name": "PT Vale Indonesia - Sorowako",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "Indonesia",
+    "lat": -2.5447,
+    "lon": 121.3548,
+    "note": "Integrated nickel mining and smelting operation on Sulawesi producing ferronickel; Vale holds a majority stake in PT Vale Indonesia."
+   },
+   {
+    "name": "Salobo Mine",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Brazil",
+    "lat": -5.7333,
+    "lon": -50.1667,
+    "note": "Large copper-gold mine in the Carajás mineral province, Pará; one of Vale's flagship copper operations."
+   },
+   {
+    "name": "Sossego Mine",
+    "type": "mine",
+    "commodity": "copper",
+    "country": "Brazil",
+    "lat": -6.45,
+    "lon": -50.15,
+    "note": "Copper-gold mine near Canaã dos Carajás, Pará, in operation since 2004."
+   },
+   {
+    "name": "Azul Mine",
+    "type": "mine",
+    "commodity": "manganese",
+    "country": "Brazil",
+    "lat": -6.15,
+    "lon": -50.05,
+    "note": "Manganese ore mine within the Carajás mineral complex, Pará, supplying ferroalloy producers worldwide."
+   },
+   {
+    "name": "Goro Plant (former VNC, New Caledonia)",
+    "type": "mine",
+    "commodity": "nickel",
+    "country": "New Caledonia",
+    "lat": -22.2974,
+    "lon": 166.928,
+    "note": "Legacy Vale Nouvelle-Calédonie nickel laterite mine and processing plant near Yaté; divested to Prony Resources in 2021."
+   }
+  ]
+ }
+]

@@ -38,14 +38,21 @@
   function renderPicker() {
     const box = document.getElementById("picker");
     box.innerHTML = "";
-    const groups = [["Supermajors", "Supermajor"], ["Trading houses", "Trading house"]];
-    groups.forEach(([label, type]) => {
+    const groups = [
+      ["Supermajor", "Supermajors"],
+      ["National oil company", "National oil companies"],
+      ["Diversified miner", "Diversified miners"],
+      ["Trading house", "Trading houses"],
+    ];
+    groups.forEach(([type, label]) => {
+      const members = companies.filter((c) => c.type === type);
+      if (!members.length) return;   // skip empty groups
       const h = document.createElement("div");
       h.className = "co-group"; h.textContent = label;
       box.appendChild(h);
       const grid = document.createElement("div");
       grid.className = "co-chip-grid";
-      companies.filter((c) => c.type === type).forEach((c) => {
+      members.forEach((c) => {
         const b = document.createElement("button");
         b.className = "co-chip" + (current && c.id === current.id ? " on" : "");
         b.style.setProperty("--c", c.color);
