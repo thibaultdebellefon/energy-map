@@ -2,34 +2,34 @@
    Dark night-ocean stage; crude = sodium amber, LNG = methane cyan. */
 
 :root {
-  /* violet-black data canvas — surfaces retuned to the new charte; the data
-     hues (amber = crude/export, cyan = LNG, violet-blue = import) are kept so
-     the map stays multi-colour and legible. */
-  --bg:        #0F0B18;
-  --bg-2:      #15101F;
-  --ocean:     #17111F;
-  --panel:     rgba(28, 22, 44, 0.90);
-  --land:      #2C2440;
-  --land-hi:   #4A3F66;
-  --border:    #2F2648;
-  --border-2:  #241C37;
-  --ink:       #EDE9F6;
-  --muted:     #968BAE;
-  --faint:     #675C80;
+  /* black data canvas — monochrome surfaces (black & white charte); the data
+     hues (amber = crude/export, cyan = LNG, blue = import) are kept so the map
+     stays multi-colour and legible. */
+  --bg:        #060606;
+  --bg-2:      #0F0F0F;
+  --ocean:     #0C0C0C;
+  --panel:     rgba(20, 20, 20, 0.92);
+  --land:      #232323;
+  --land-hi:   #3E3E3E;
+  --border:    #2A2A2A;
+  --border-2:  #1B1B1B;
+  --ink:       #F2F2F2;
+  --muted:     #9A9A9A;
+  --faint:     #5E5E5E;
 
   --crude:     #F4A93C;
   --crude-hot: #FF6A2B;
   --lng:       #46D5E4;
   --lng-hot:   #12B6D4;
-  --imp:       #8A7BFF;   /* importers on the diverging net scale (violet-blue) */
+  --imp:       #5B8CFF;   /* importers on the diverging net scale (blue) */
 
-  --r: 9px;
+  --r: 12px;
   --bar-h: 56px;
   --panel-w: 340px;
 
-  --sans: "Inter", system-ui, -apple-system, sans-serif;
-  --disp: "Inter", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --sans: "Archivo", system-ui, -apple-system, sans-serif;
+  --disp: "Archivo Black", "Archivo", system-ui, sans-serif;
+  --mono: "Archivo", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 * { box-sizing: border-box; }
@@ -176,7 +176,7 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 
 /* ---------- Stage / map ---------- */
 .stage { grid-area: stage; position: relative; background:
-  radial-gradient(120% 120% at 60% 0%, #221835 0%, var(--bg) 62%); overflow: hidden; }
+  radial-gradient(120% 120% at 60% 0%, #161616 0%, var(--bg) 62%); overflow: hidden; }
 #map { width: 100%; height: 100%; display: block; cursor: grab; }
 #map:active { cursor: grabbing; }
 .sphere { fill: var(--ocean); stroke: var(--border-2); stroke-width: .6; }
