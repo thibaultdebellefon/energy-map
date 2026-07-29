@@ -111,7 +111,7 @@
     p.innerHTML = "";
     const card = document.createElement("div");
     card.className = "co-card";
-    card.style.setProperty("--c", c.color);
+    card.style.setProperty("--c", "#0A0A0A"); // monochrome chrome; data stays coloured
     const priv = c.listing === "Private";
     card.innerHTML =
       `<div class="co-name"><span class="mono-tag">${esc(c.type)}</span><h2></h2></div>` +
@@ -150,6 +150,8 @@
   function fit() {
     const [w, h] = size();
     projection.fitExtent([[8, 8], [w - 8, h - 8]], { type: "Sphere" });
+    const zk = 1.18, zt = projection.translate(), zs = projection.scale();
+    projection.scale(zs * zk).translate([w / 2 + (zt[0] - w / 2) * zk, h / 2 + (zt[1] - h / 2) * zk]);
     gSphere.attr("d", path({ type: "Sphere" }));
     gGrat.attr("d", path(d3.geoGraticule10()));
     gCountries.selectAll("path").attr("d", path);
@@ -159,13 +161,15 @@
   function drawCountries(c) {
     const hi = new Set();
     c.assets.forEach((a) => { const f = countryOf(a); if (f) hi.add(f); });
+    // operating countries get a subtle monochrome darkening (data colour lives
+    // in the markers, not the fill — keeps the map clean and on-brand).
     const sel = gCountries.selectAll("path").data(features);
     sel.enter().append("path").attr("class", "country").merge(sel)
       .attr("d", path)
-      .style("fill", (f) => hi.has(f) ? c.color : null)
-      .style("fill-opacity", (f) => hi.has(f) ? 0.24 : 1)
-      .style("stroke", (f) => hi.has(f) ? c.color : null)
-      .style("stroke-opacity", (f) => hi.has(f) ? 0.5 : 1);
+      .style("fill", (f) => hi.has(f) ? "#0A0A0A" : null)
+      .style("fill-opacity", (f) => hi.has(f) ? 0.13 : 1)
+      .style("stroke", (f) => hi.has(f) ? "#0A0A0A" : null)
+      .style("stroke-opacity", (f) => hi.has(f) ? 0.28 : 1);
     sel.exit().remove();
   }
   function placeMarks(c) {
@@ -184,10 +188,10 @@
         return d3.symbol().type(SYMBOL[cat]).size(cat === "Office" ? 70 : 96)();
       })
       .attr("fill", (d) => C.color(d.commodity))
-      .attr("stroke", "#060606").attr("stroke-width", 1.2).attr("fill-opacity", 0.95);
+      .attr("stroke", "#fff").attr("stroke-width", 1.6).attr("fill-opacity", 0.98);
     all.on("click", (ev, d) => { ev.stopPropagation(); showPop(d); })
-      .on("mouseenter", function () { d3.select(this).select("path").attr("stroke", "#fff"); })
-      .on("mouseleave", function () { d3.select(this).select("path").attr("stroke", "#060606"); });
+      .on("mouseenter", function () { d3.select(this).select("path").attr("stroke", "#0A0A0A"); })
+      .on("mouseleave", function () { d3.select(this).select("path").attr("stroke", "#fff"); });
   }
   function drawMap(c) { drawCountries(c); placeMarks(c); hidePop(); }
 

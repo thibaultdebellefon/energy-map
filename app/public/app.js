@@ -89,6 +89,10 @@
     const [w, h] = size();
     svg.attr("viewBox", `0 0 ${w} ${h}`);
     projection.fitExtent([[6, 6], [w - 6, h - 6]], { type: "Sphere" });
+    // zoom in about the stage centre so the map fills the space (crops the empty
+    // ocean/poles rather than leaving big margins).
+    const zk = 1.2, zt = projection.translate(), zs = projection.scale();
+    projection.scale(zs * zk).translate([w / 2 + (zt[0] - w / 2) * zk, h / 2 + (zt[1] - h / 2) * zk]);
     if (sphere) sphere.attr("d", path({ type: "Sphere" }));
     if (graticule) graticule.attr("d", path(d3.geoGraticule10()));
     gCountries.selectAll("path.country").attr("d", path);
@@ -171,26 +175,27 @@
       return {
         diverging: true, min: -ext, max: ext,
         scale: d3.scaleDivergingSqrt([-ext, 0, ext], d3.interpolateRgbBasis(
-          ["#F0B25E", "#D08736", "#1a2330", "#3AA6C4", "#8AE0F0"])),
+          ["#8A5A12", "#D9954A", "#F1F1F1", "#57B4CC", "#0E7E9C"])),
       };
     }
     const col = d3.color(activeCommodityColor());
     const dark = d3.color(col).darker(1.6).formatHex();
-    const bright = d3.color(col).brighter(1).formatHex();
+    const softer = d3.color(col).brighter(0.5).formatHex();
     if (state.metric === "net") {
       const ext = d3.max(vals.map(Math.abs)) || 1;
       return {
         diverging: true, min: -ext, max: ext,
-        // sqrt spreads colour so a few dominant net exporters don't flatten
-        // everyone else to the dark midpoint. Importers blue, exporters = commodity.
+        // On the light canvas, near-balanced countries sit at pale grey (blend
+        // with land); importers deepen to blue, exporters to the commodity hue.
         scale: d3.scaleDivergingSqrt(
           [-ext, 0, ext],
-          d3.interpolateRgbBasis(["#8FA0FF", "#6C7BFF", "#1a2330", dark, col.formatHex()])
+          d3.interpolateRgbBasis(["#173FC7", "#7C97F0", "#F1F1F1", col.formatHex(), dark])
         ),
       };
     }
     const max = d3.max(vals) || 1;
-    const interp = d3.interpolateRgbBasis(["#20242b", dark, col.formatHex(), bright]);
+    // Low = pale grey (≈ land), high = saturated → dark commodity hue.
+    const interp = d3.interpolateRgbBasis(["#F1F1F1", softer, col.formatHex(), dark]);
     return { diverging: false, min: 0, max, scale: d3.scaleSequentialSqrt([0, max], interp) };
   }
 
@@ -601,7 +606,7 @@
         : dot(cc, labelOf(state.commodity));
       return;
     }
-    flowKey.innerHTML = "brighter = larger net position";
+    flowKey.innerHTML = "stronger colour = larger net position";
     document.getElementById("legend-comm").innerHTML = dot(cc, labelOf(state.commodity));
     if (state.metric === "none" || state.selected) { row.style.display = "none"; }
     else {
