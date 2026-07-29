@@ -1,14 +1,15 @@
-/* Newsroom: commodity-filtered headlines from news.json.
-   All article fields come from GDELT (external) and are HTML-escaped before
-   they ever touch innerHTML. Reads/writes ?commodity= so a filter carries
-   across sections. */
+/* Newsroom — Bloomberg-style: always-visible thematic sections (one per
+   commodity), each an auto-scrolling carousel of article cards with photos, so
+   the reader sees the full diversity of coverage at a glance. Filtering by a
+   commodity switches to a full grid of that theme.
+   Data: Supabase (relevance-filtered at ingestion). All external fields escaped. */
 (function () {
   "use strict";
   const C = window.COMMODITIES;
+  const $ = (id) => document.getElementById(id);
   const esc = (s) => (s || "").replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  // "3 hours ago", "2 days ago" — GDELT gives day precision, so this is coarse.
   function ago(dateStr) {
     if (!dateStr) return "";
     const then = new Date(dateStr + "T00:00:00Z"), now = new Date();
@@ -20,25 +21,44 @@
     return w + (w === 1 ? " week ago" : " weeks ago");
   }
 
-  function pill(k) {
-    return `<span class="pill" style="--c:${C.color(k)}"><span class="dot"></span>${esc(C.label(k))}</span>`;
+  const safeImg = (u) => (typeof u === "string" &&
+    /^https?:\/\/[^\s"'()<>]+$/.test(u)) ? u : null;
+
+  // Card thumbnail: the article's own image, else a soft commodity-tinted
+  // gradient (so a dead host degrades to colour, never a broken image).
+  function thumbStyle(a) {
+    const img = safeImg(a.image);
+    const c = C.color((a.tags || [])[0] || "crude");
+    const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 50%, #fff), ` +
+      `color-mix(in srgb, ${c} 16%, #fff))`;
+    return img ? `background:${grad};background-image:url('${img}');` +
+      `background-size:cover;background-position:center` : `background:${grad}`;
   }
 
-  const PAGE_SIZE = 24; // headlines rendered per batch (after the lead story)
+  function acard(a) {
+    const tag = (a.tags || [])[0];
+    return `<a class="acard" href="${esc(a.url)}" target="_blank" rel="noopener">` +
+      `<div class="acard-img" style="${thumbStyle(a)}"></div>` +
+      `<div class="acard-b">` +
+      (tag ? `<span class="acard-tag" style="color:${C.color(tag)}">` +
+        `<span class="d" style="background:${C.color(tag)}"></span>${esc(C.label(tag))}</span>` : "") +
+      `<div class="acard-t">${esc(a.title)}</div>` +
+      `<div class="acard-m"><span>${esc(a.source || "")}</span><span>${esc(ago(a.date))}</span></div>` +
+      `</div></a>`;
+  }
 
   let filter = C.clean(new URLSearchParams(location.search).get("commodity"));
   if (!C.ORDER.includes(filter)) filter = "all";
   let articles = [];
-  let shown = PAGE_SIZE; // how many list items are currently revealed
 
   function setFilter(f) {
     filter = f;
-    shown = PAGE_SIZE; // reset paging when the filter changes
     const u = new URL(location.href);
     if (f === "all") u.searchParams.delete("commodity");
     else u.searchParams.set("commodity", f);
     history.replaceState(null, "", u);
     render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function counts() {
@@ -49,108 +69,67 @@
   }
 
   function renderFilters(ct) {
-    const box = document.getElementById("filters");
+    const box = $("filters");
     box.innerHTML = "";
     const mk = (k, lbl, color) => {
       const el = document.createElement("span");
       el.className = "chip" + (filter === k ? " on" : "");
       if (color) el.style.setProperty("--c", color);
-      const n = ct[k] || 0;
       el.innerHTML = (color ? `<span class="dot" style="background:${color}"></span>` : "") +
-        `${esc(lbl)} <span class="ct">${n}</span>`;
+        `${esc(lbl)} <span class="ct">${ct[k] || 0}</span>`;
       el.onclick = () => setFilter(k);
       box.appendChild(el);
     };
     mk("all", "All", null);
-    // Only show commodities that actually have coverage, richest first.
-    C.ORDER.filter((k) => ct[k] > 0)
-      .sort((a, b) => ct[b] - ct[a])
+    C.ORDER.filter((k) => ct[k] > 0).sort((a, b) => ct[b] - ct[a])
       .forEach((k) => mk(k, C.label(k), C.color(k)));
   }
 
-  // Only clean http(s) URLs (guards the style attribute against CSS injection).
-  const safeImg = (u) => (typeof u === "string" &&
-    /^https?:\/\/[^\s"'()<>]+$/.test(u)) ? u : null;
-
-  // Thumbnail div: the article's own image if present, else a soft commodity-
-  // tinted gradient — so every card carries colour and no broken image ever shows.
-  function thumb(a, cls) {
-    const img = safeImg(a.image);
-    const c = C.color((a.tags || [])[0] || "crude");
-    const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 52%, #fff), ` +
-      `color-mix(in srgb, ${c} 18%, #fff))`;
-    // A dead image host degrades to the commodity tint underneath, never blank.
-    const style = img
-      ? `background:${grad};background-image:url('${img}');background-size:cover;background-position:center`
-      : `background:${grad}`;
-    return `<div class="${cls}" style="${style}"></div>`;
+  // one always-visible section per commodity, articles scrolling in a carousel
+  function renderSections() {
+    const byC = {};
+    C.ORDER.forEach((k) => { byC[k] = []; });
+    articles.forEach((a) => (a.tags || []).forEach((t) => { if (byC[t]) byC[t].push(a); }));
+    const html = C.ORDER.filter((k) => byC[k].length).map((k, i) => {
+      const arts = byC[k], col = C.color(k);
+      const marquee = arts.length >= 5;                 // enough cards to loop
+      const cards = arts.map(acard).join("");
+      const track = marquee ? cards + cards : cards;    // duplicate for seamless loop
+      const dur = Math.max(24, arts.length * 4.5);
+      const dir = i % 2 ? " rev" : "";                  // alternate drift direction
+      return `<section class="rubric" style="--c:${col}">` +
+        `<div class="rubric-head">` +
+        `<span class="rubric-dot"></span>` +
+        `<h2 class="rubric-name">${esc(C.label(k))}</h2>` +
+        `<span class="rubric-ct">${arts.length}</span>` +
+        `<button class="rubric-all" data-k="${k}">View all →</button></div>` +
+        `<div class="rubric-scroll${marquee ? " marq" : ""}">` +
+        `<div class="rubric-track${marquee ? " run" + dir : ""}" style="--dur:${dur}s">${track}</div>` +
+        `</div></section>`;
+    }).join("");
+    $("feed").innerHTML = html;
+    $("feed").querySelectorAll(".rubric-all").forEach((b) => b.onclick = () => setFilter(b.dataset.k));
   }
 
-  function itemRow(a) {
-    const tags = (a.tags || []).map(pill).join("");
-    return `<a class="news-item" href="${esc(a.url)}" target="_blank" rel="noopener">` +
-      thumb(a, "n-thumb") +
-      `<div class="n-body"><div class="t">${esc(a.title)}</div>` +
-      `<div class="m"><span class="src">${esc(a.source || "")}</span>` +
-      `<span class="when">${esc(ago(a.date))}</span></div></div>` +
-      `<div class="tags">${tags}</div></a>`;
+  function renderGrid(k) {
+    const arts = articles.filter((a) => (a.tags || []).includes(k));
+    $("feed").innerHTML = arts.length
+      ? `<div class="news-grid">${arts.map(acard).join("")}</div>`
+      : `<div class="empty">No headlines for ${esc(C.label(k))} yet.</div>`;
   }
 
   function render() {
     const ct = counts();
     renderFilters(ct);
-    document.getElementById("count").innerHTML =
-      `<b>${filter === "all" ? articles.length : (ct[filter] || 0)}</b> ` +
-      `headline${(filter === "all" ? articles.length : ct[filter]) === 1 ? "" : "s"}` +
+    const n = filter === "all" ? articles.length : (ct[filter] || 0);
+    $("count").innerHTML = `<b>${n}</b> headline${n === 1 ? "" : "s"}` +
       (filter === "all" ? " indexed" : " · " + esc(C.label(filter)));
-
-    const items = articles.filter((a) => filter === "all" || (a.tags || []).includes(filter));
-    const lead = document.getElementById("lead");
-    const list = document.getElementById("list");
-    const more = document.getElementById("more");
-
-    if (!items.length) {
-      lead.innerHTML = "";
-      more.innerHTML = "";
-      list.innerHTML = `<div class="empty">No headlines yet` +
-        `${filter !== "all" ? " for " + esc(C.label(filter)) : ""}. ` +
-        `Run <code>python data-pipeline/fetch_news_gdelt.py</code> to populate the feed.</div>`;
-      return;
+    if (!articles.length) {
+      $("feed").innerHTML = '<div class="empty">No headlines yet.</div>'; return;
     }
-
-    // Lead story = most recent in the current view.
-    const top = items[0];
-    const leadTag = (top.tags || [])[0];
-    lead.innerHTML =
-      `<a class="lead" href="${esc(top.url)}" target="_blank" rel="noopener"` +
-      (leadTag ? ` style="--c:${C.color(leadTag)}"` : "") + `>` +
-      `<div class="lead-body">` +
-      `<div class="kicker">${leadTag ? esc(C.label(leadTag)) : "Top story"} · ${esc(ago(top.date))}</div>` +
-      `<h2 class="t">${esc(top.title)}</h2>` +
-      `<div class="m"><span class="src">${esc(top.source || "")}</span>` +
-      `<span>${(top.tags || []).map(pill).join(" ")}</span></div></div>` +
-      thumb(top, "lead-img") + `</a>`;
-
-    // Everything after the lead, revealed a batch at a time (client-side — the
-    // whole feed is already loaded, so "Load more" is instant, no network).
-    const rest = items.slice(1);
-    list.innerHTML = rest.slice(0, shown).map(itemRow).join("");
-
-    const remaining = rest.length - shown;
-    if (remaining > 0) {
-      more.innerHTML =
-        `<button class="load-more" type="button">Load more ` +
-        `<span>${Math.min(PAGE_SIZE, remaining)} of ${remaining}</span></button>`;
-      more.querySelector(".load-more").onclick = () => { shown += PAGE_SIZE; render(); };
-    } else {
-      more.innerHTML = rest.length > PAGE_SIZE
-        ? `<div class="feed-end">You're all caught up — ${rest.length + 1} headlines.</div>` : "";
-    }
+    if (filter === "all") renderSections(); else renderGrid(filter);
   }
 
-  // GDELT syndicates the same story across many outlets; collapse near-identical
-  // titles so the feed doesn't repeat itself. Keep the most recent copy and
-  // merge its tags so filtering still works.
   function dedupe(list) {
     const norm = (t) => (t || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
     const seen = new Map();
@@ -164,8 +143,6 @@
     return [...seen.values()];
   }
 
-  // Live from Supabase (already relevance-filtered at ingestion). Ordered newest
-  // first; dedupe() collapses syndicated near-duplicate titles.
   SB.get("news?select=title,url,source,published_date,commodities_tags,image" +
     "&order=published_date.desc&limit=1000").then((rows) => {
     articles = dedupe(rows.map((r) => ({
@@ -174,7 +151,6 @@
     })));
     render();
   }).catch(() => {
-    document.getElementById("list").innerHTML =
-      '<div class="empty">Could not load the news feed from Supabase.</div>';
+    $("feed").innerHTML = '<div class="empty">Could not load the news feed from Supabase.</div>';
   });
 })();
