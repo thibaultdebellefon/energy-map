@@ -34,7 +34,7 @@
   const projection = d3.geoNaturalEarth1();
   const path = d3.geoPath(projection);
   let world = null, features = [], companies = [], byId = {}, current = null;
-  let gSphere, gGrat, gCountries, gMarks, mapReady = false;
+  let gSphere, gGrat, gCountries, gMarks, gMap, zoom, curK = 1, mapReady = false;
 
   const clean = (s) => (s || "").replace(/[^\w-]/g, "");
   const $ = (id) => document.getElementById(id);
@@ -138,13 +138,23 @@
     return [Math.max(320, box.width), Math.max(320, box.height)];
   }
   function setup() {
-    gSphere = svg.append("path").attr("class", "sphere");
-    gGrat = svg.append("path").attr("class", "graticule");
-    gCountries = svg.append("g");
-    gMarks = svg.append("g");
+    gMap = svg.append("g").attr("class", "map-root");
+    gSphere = gMap.append("path").attr("class", "sphere");
+    gGrat = gMap.append("path").attr("class", "graticule");
+    gCountries = gMap.append("g");
+    gMarks = gMap.append("g");
     gCountries.selectAll("path").data(features).enter().append("path")
       .attr("class", "country").attr("d", path);
     renderLegend();
+    // zoom / pan, like the main map
+    zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", (e) => {
+      curK = e.transform.k;
+      gMap.attr("transform", e.transform);
+      gMarks.selectAll("g.mk path").attr("transform", "scale(" + (1 / curK) + ")");
+      gCountries.selectAll("path.country").attr("stroke-width", 0.7 / curK);
+      hidePop();
+    });
+    svg.call(zoom);
     svg.on("click", hidePop);
   }
   function fit() {
@@ -209,8 +219,9 @@
     pop.querySelector(".ctry").textContent = a.country;
     pop.querySelector(".pop-note").textContent = a.note || "";
     pop.hidden = false;
-    const p = projection([a.lon, a.lat]);
-    if (p) {
+    const p0 = projection([a.lon, a.lat]);
+    if (p0) {
+      const p = d3.zoomTransform(svg.node()).apply(p0);  // account for zoom/pan
       const box = svg.node().getBoundingClientRect();
       pop.style.left = Math.min(Math.max(p[0], 130), box.width - 130) + "px";
       pop.style.top = Math.max(p[1] - 12, 90) + "px";
@@ -243,6 +254,7 @@
     $("company-view").hidden = false;
     if (!mapReady) { setup(); mapReady = true; }
     fit();
+    if (zoom) { curK = 1; svg.call(zoom.transform, d3.zoomIdentity); }  // reset on switch
   }
   function select(id) {
     current = byId[id] || companies[0];

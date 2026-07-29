@@ -14,15 +14,8 @@
 <div id="app">
   <!-- Top control bar -->
   <header class="bar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true"></span>
-      <div class="brand-txt">
-        <h1>ENERGY&nbsp;MAP</h1>
-        <p id="subtitle">Global crude oil &amp; LNG trade</p>
-      </div>
-    </div>
-
     <div class="controls">
+      <div class="ctrl-modes">
       <div class="seg view" id="view" role="group" aria-label="View">
         <button data-v="overview" class="on">Overview</button>
         <button data-v="trade">Trade</button>
@@ -33,7 +26,9 @@
         <button data-l="ports" class="on">Ports</button>
         <button data-l="routes" class="on">Routes</button>
       </div>
+      </div><!-- /ctrl-modes -->
 
+      <div class="ctrl-opts">
       <label class="field">
         <span>Commodity</span>
         <select id="commodity"></select>
@@ -59,6 +54,7 @@
       </label>
 
       <button id="reset" class="ghost" title="Reset view">Reset</button>
+      </div><!-- /ctrl-opts -->
     </div>
   </header>
 

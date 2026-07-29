@@ -84,7 +84,12 @@ body {
 }
 .brand-txt p { margin: 3px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .02em; }
 
-.controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.controls { display: flex; align-items: center; gap: 16px; flex: 1; flex-wrap: wrap;
+  justify-content: space-between; }
+.ctrl-modes { display: flex; align-items: center; gap: 12px; }
+/* right-anchored so the option controls don't shift when the Layers segment
+   appears/disappears on the Overview/Trade switch */
+.ctrl-opts { display: flex; align-items: center; gap: 16px; margin-left: auto; flex-wrap: wrap; }
 .field { display: flex; flex-direction: column; gap: 3px; font-size: 10px; color: var(--muted);
   text-transform: uppercase; letter-spacing: .08em; }
 .field b { color: var(--ink); font-family: var(--mono); }
@@ -107,8 +112,8 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 }
 .seg button:hover { color: var(--ink); }
 .seg button.off, .seg button:disabled { opacity: .38; cursor: not-allowed; }
-.seg button.on { background: var(--crude); color: #1a1206; box-shadow: 0 0 12px rgba(244,169,60,.35); }
-.seg button.on.lng { background: var(--lng); color: #062024; box-shadow: 0 0 12px rgba(70,213,228,.35); }
+.seg button.on { background: #0A0A0A; color: #fff; box-shadow: none; }
+.seg button.on.lng { background: #0A0A0A; color: #fff; box-shadow: none; }
 
 .slider input {
   -webkit-appearance: none; appearance: none; width: 118px; height: 4px;
