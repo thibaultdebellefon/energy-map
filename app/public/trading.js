@@ -41,7 +41,10 @@
   function renderWatchlist() {
     const box = document.getElementById("watchlist");
     box.innerHTML = "";
-    C.ORDER.forEach((k) => {
+    // Priced markets first (canonical order); the ones with no free price feed
+    // sink to the bottom and read "Coming soon" instead of "n/a".
+    const ordered = C.ORDER.filter(has).concat(C.ORDER.filter((k) => !has(k)));
+    ordered.forEach((k) => {
       const s = data.series[k] || [];
       const on = has(k);
       const btn = document.createElement("button");
@@ -55,7 +58,7 @@
         right = `<span class="rt"><span class="px">${fmtNum(last)}</span>` +
           `<span class="ch ${dir}">${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%</span></span>`;
       } else {
-        right = `<span class="na">n/a</span>`;
+        right = `<span class="soon">Coming soon</span>`;
       }
       const spark = on ? `<span class="spark">${sparkSVG(s, C.color(k))}</span>`
         : `<span class="spark"></span>`;
@@ -116,8 +119,8 @@
       document.getElementById("foot").textContent = "";
       document.getElementById("stats").innerHTML = "";
       svg.append("foreignObject").attr("x", 0).attr("y", 0).attr("width", "100%").attr("height", 360)
-        .html(`<div class="no-series"><div class="big">No free price series</div>` +
-          `<p>${C.label(commodity)} has no public daily/monthly price feed we can chart.</p></div>`);
+        .html(`<div class="no-series"><div class="big">Coming soon</div>` +
+          `<p>A live ${C.label(commodity)} price feed is on the way.</p></div>`);
       return;
     }
 

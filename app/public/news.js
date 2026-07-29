@@ -68,10 +68,29 @@
       .forEach((k) => mk(k, C.label(k), C.color(k)));
   }
 
+  // Only clean http(s) URLs (guards the style attribute against CSS injection).
+  const safeImg = (u) => (typeof u === "string" &&
+    /^https?:\/\/[^\s"'()<>]+$/.test(u)) ? u : null;
+
+  // Thumbnail div: the article's own image if present, else a soft commodity-
+  // tinted gradient — so every card carries colour and no broken image ever shows.
+  function thumb(a, cls) {
+    const img = safeImg(a.image);
+    const c = C.color((a.tags || [])[0] || "crude");
+    const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 52%, #fff), ` +
+      `color-mix(in srgb, ${c} 18%, #fff))`;
+    // A dead image host degrades to the commodity tint underneath, never blank.
+    const style = img
+      ? `background:${grad};background-image:url('${img}');background-size:cover;background-position:center`
+      : `background:${grad}`;
+    return `<div class="${cls}" style="${style}"></div>`;
+  }
+
   function itemRow(a) {
     const tags = (a.tags || []).map(pill).join("");
     return `<a class="news-item" href="${esc(a.url)}" target="_blank" rel="noopener">` +
-      `<div><div class="t">${esc(a.title)}</div>` +
+      thumb(a, "n-thumb") +
+      `<div class="n-body"><div class="t">${esc(a.title)}</div>` +
       `<div class="m"><span class="src">${esc(a.source || "")}</span>` +
       `<span class="when">${esc(ago(a.date))}</span></div></div>` +
       `<div class="tags">${tags}</div></a>`;
@@ -105,10 +124,12 @@
     lead.innerHTML =
       `<a class="lead" href="${esc(top.url)}" target="_blank" rel="noopener"` +
       (leadTag ? ` style="--c:${C.color(leadTag)}"` : "") + `>` +
+      `<div class="lead-body">` +
       `<div class="kicker">${leadTag ? esc(C.label(leadTag)) : "Top story"} · ${esc(ago(top.date))}</div>` +
       `<h2 class="t">${esc(top.title)}</h2>` +
       `<div class="m"><span class="src">${esc(top.source || "")}</span>` +
-      `<span>${(top.tags || []).map(pill).join(" ")}</span></div></a>`;
+      `<span>${(top.tags || []).map(pill).join(" ")}</span></div></div>` +
+      thumb(top, "lead-img") + `</a>`;
 
     // Everything after the lead, revealed a batch at a time (client-side — the
     // whole feed is already loaded, so "Load more" is instant, no network).
@@ -145,11 +166,11 @@
 
   // Live from Supabase (already relevance-filtered at ingestion). Ordered newest
   // first; dedupe() collapses syndicated near-duplicate titles.
-  SB.get("news?select=title,url,source,published_date,commodities_tags" +
+  SB.get("news?select=title,url,source,published_date,commodities_tags,image" +
     "&order=published_date.desc&limit=1000").then((rows) => {
     articles = dedupe(rows.map((r) => ({
       title: r.title, url: r.url, source: r.source,
-      date: r.published_date, tags: r.commodities_tags || [],
+      date: r.published_date, tags: r.commodities_tags || [], image: r.image,
     })));
     render();
   }).catch(() => {

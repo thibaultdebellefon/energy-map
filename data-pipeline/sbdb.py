@@ -35,14 +35,16 @@ def upsert_news(conn, rows: list[dict]) -> int:
         r["id"], r["title"], r["url"], r.get("source"), r.get("published_date"),
         r.get("snippet"),
         Json(json.loads(r["commodities_tags"])) if r.get("commodities_tags") else None,
+        r.get("image"),
     ) for r in rows]
     cur = conn.cursor()
     execute_values(
         cur,
-        "insert into news (id,title,url,source,published_date,snippet,commodities_tags) "
+        "insert into news (id,title,url,source,published_date,snippet,commodities_tags,image) "
         "values %s on conflict (url) do update set title=excluded.title, "
         "source=excluded.source, published_date=excluded.published_date, "
-        "snippet=excluded.snippet, commodities_tags=excluded.commodities_tags",
+        "snippet=excluded.snippet, commodities_tags=excluded.commodities_tags, "
+        "image=coalesce(excluded.image, news.image)",
         vals, page_size=500)
     conn.commit()
     return len(rows)

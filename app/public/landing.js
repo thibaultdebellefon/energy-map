@@ -6,6 +6,9 @@
   const C = window.COMMODITIES;
   const fmt = (n) => n >= 1000 ? d3fmt(n) : n.toFixed(2);
   function d3fmt(n) { return n.toLocaleString("en-US", { maximumFractionDigits: 0 }); }
+  const esc = (s) => (s || "").replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const safeImg = (u) => (typeof u === "string" && /^https?:\/\/[^\s"'()<>]+$/.test(u)) ? u : null;
 
   // ---- coverage strip (static, always renders) ----
   const cov = document.getElementById("coverage");
@@ -54,5 +57,29 @@
     const n = rows.length;
     const el = document.getElementById("stat-news");
     if (el) el.innerHTML = `<b>${n}</b> headline${n === 1 ? "" : "s"} indexed <span class="go">→</span>`;
+  }).catch(() => {});
+
+  // ---- latest headlines strip (photos → energy / trade ambiance) ----
+  SB.get("news?select=title,url,source,commodities_tags,image" +
+    "&order=published_date.desc&limit=60").then((rows) => {
+    const box = document.getElementById("latest-news");
+    if (!box) return;
+    const seen = new Set();
+    const withImg = rows.filter((r) => safeImg(r.image) &&
+      !seen.has(r.title) && seen.add(r.title));   // prefer real photos, dedupe
+    const pick = (withImg.length >= 4 ? withImg : withImg.concat(rows)).slice(0, 4);
+    box.innerHTML = pick.map((r) => {
+      const tag = (r.commodities_tags || [])[0] || "crude";
+      const c = C.color(tag);
+      const img = safeImg(r.image);
+      const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 52%, #fff), ` +
+        `color-mix(in srgb, ${c} 18%, #fff))`;
+      const style = img ? `background:${grad};background-image:url('${img}')` : `background:${grad}`;
+      return `<a class="lnews" href="${esc(r.url)}" target="_blank" rel="noopener">` +
+        `<div class="lnews-img" style="${style}"></div>` +
+        `<div class="lnews-b"><div class="lnews-tag" style="color:${c}">${esc(C.label(tag))}</div>` +
+        `<div class="lnews-t">${esc(r.title)}</div>` +
+        `<div class="lnews-s">${esc(r.source || "")}</div></div></a>`;
+    }).join("");
   }).catch(() => {});
 })();

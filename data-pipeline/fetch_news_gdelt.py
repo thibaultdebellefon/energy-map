@@ -80,10 +80,12 @@ def fetch_one(gd: GdeltDoc, commodity: str, kw: str, timespan: str) -> list[dict
         url = r.get("url")
         if not url:
             continue
+        img = r.get("socialimage")               # article's own OG/social image
+        img = img if isinstance(img, str) and img.strip() else None
         out.append({
             "title": r.get("title"), "url": url, "source": r.get("domain"),
             "published_date": _seendate_to_iso(r.get("seendate")),
-            "commodity": commodity,
+            "image": img, "commodity": commodity,
         })
     print(f"  {commodity:12} ('{kw}'): {len(out)} articles")
     return out
@@ -113,6 +115,7 @@ def run(timespan: str) -> dict:
             "id": hashlib.md5(u.encode()).hexdigest(), "title": m["title"], "url": u,
             "source": m["source"], "published_date": m["published_date"],
             "snippet": None, "commodities_tags": _json.dumps(keep),
+            "image": m.get("image"),
         })
 
     conn = db.get_connection()
