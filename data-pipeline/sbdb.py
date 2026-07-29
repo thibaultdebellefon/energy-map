@@ -73,6 +73,27 @@ def upsert_prices(conn, rows: list[dict]) -> int:
     return len(rows)
 
 
+def upsert_quotes(conn, rows: list[dict]) -> int:
+    if not rows:
+        return 0
+    vals = [(r["company_id"], r.get("ticker"), r.get("exchange"), r.get("currency"),
+             r.get("price_native"), r.get("price_usd"), r.get("prev_close_usd"),
+             r.get("change_pct")) for r in rows]
+    cur = conn.cursor()
+    execute_values(
+        cur,
+        "insert into company_quotes (company_id,ticker,exchange,currency,price_native,"
+        "price_usd,prev_close_usd,change_pct) values %s "
+        "on conflict (company_id) do update set ticker=excluded.ticker, "
+        "exchange=excluded.exchange, currency=excluded.currency, "
+        "price_native=excluded.price_native, price_usd=excluded.price_usd, "
+        "prev_close_usd=excluded.prev_close_usd, change_pct=excluded.change_pct, "
+        "asof=now()",
+        vals, page_size=200)
+    conn.commit()
+    return len(rows)
+
+
 # --- raw map/production tables (so Comtrade/EIA/USGS fetchers can target Supabase) ---
 _FACILITY_COLS = ("id", "name", "type", "country_iso", "lat", "lon", "commodity",
                   "operator_company", "production_volume", "production_year",

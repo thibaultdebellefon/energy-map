@@ -44,3 +44,7 @@ jobs:
       - name: Fetch prices → Supabase (Alpha Vantage)
         continue-on-error: true
         run: python data-pipeline/fetch_prices_alphavantage.py
+
+      - name: Fetch share prices → Supabase (Yahoo, keyless)
+        continue-on-error: true
+        run: python data-pipeline/fetch_stocks.py

@@ -198,6 +198,38 @@
       .on("mouseleave", () => { hl.style("opacity", 0); hd.style("opacity", 0); tip.style.opacity = 0; });
   }
 
+  // ---- equities strip: live share prices for the listed operators ----
+  // company_quotes carries a USD price + day change; we embed the company's
+  // name/logo/type via the FK. Rows deep-link into that company's profile.
+  function renderEquities() {
+    const box = document.getElementById("equities");
+    if (!box) return;
+    SB.get("company_quotes?select=company_id,ticker,exchange,price_usd,change_pct," +
+      "companies(name,logo,type)&order=change_pct.desc").then((rows) => {
+      box.innerHTML = "";
+      (rows || []).forEach((r) => {
+        const co = r.companies || {};
+        const chg = r.change_pct == null ? 0 : r.change_pct;
+        const dir = chg >= 0 ? "up" : "down";
+        const a = document.createElement("a");
+        a.className = "eq";
+        a.href = "companies.html?company=" + encodeURIComponent(r.company_id);
+        a.innerHTML =
+          `<span class="eq-top">` +
+          (co.logo ? `<img class="eq-logo" alt="" src="${co.logo}" onerror="this.remove()">` : "") +
+          `<span class="eq-tk"></span></span>` +
+          `<span class="eq-nm"></span>` +
+          `<span class="eq-rt"><span class="eq-px"></span>` +
+          `<span class="eq-ch ${dir}">${chg >= 0 ? "+" : ""}${chg.toFixed(2)}%</span></span>`;
+        a.querySelector(".eq-tk").textContent = r.ticker + " · " + r.exchange;
+        a.querySelector(".eq-nm").textContent = co.name || r.company_id;
+        a.querySelector(".eq-px").textContent =
+          r.price_usd == null ? "—" : "$" + fmtNum(r.price_usd);
+        box.appendChild(a);
+      });
+    }).catch(() => { box.innerHTML = ""; });
+  }
+
   // Live from Supabase: the trading_series view already picks one source per
   // commodity and returns the full series as a [date, price] array.
   SB.get("trading_series?select=commodity,unit,source,points").then((rows) => {
@@ -214,4 +246,6 @@
   }).catch(() => {
     document.getElementById("foot").textContent = "Could not load prices from Supabase";
   });
+
+  renderEquities();
 })();

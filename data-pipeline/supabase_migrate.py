@@ -83,10 +83,18 @@ create index if not exists ix_assets_company on company_assets (company_id);
 
 create table if not exists map_snapshot (
   commodity text primary key, data jsonb, updated_at timestamptz default now());
+
+create table if not exists company_quotes (
+  company_id text primary key references companies(id) on delete cascade,
+  ticker text, exchange text, currency text,
+  price_native double precision, price_usd double precision,
+  prev_close_usd double precision, change_pct double precision,
+  asof timestamptz default now());
 """
 
 TABLES = ["price_history", "news", "export_flows", "production", "facility",
-          "companies", "company_footprint", "company_assets", "map_snapshot"]
+          "companies", "company_footprint", "company_assets", "map_snapshot",
+          "company_quotes"]
 
 
 def apply_rls(cur):
