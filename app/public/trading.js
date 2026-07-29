@@ -126,12 +126,20 @@
       }
       const spark = on ? `<span class="spark">${sparkSVG(s, col(k))}</span>`
         : `<span class="spark"></span>`;
-      const lg = logo(k);
-      const lead = lg
-        ? `<img class="wl-logo" alt="" src="${lg}" onerror="this.style.visibility='hidden'">`
-        : `<span class="dot"></span>`;
-      btn.innerHTML = `${lead}<span class="nm"></span>${spark}${right}`;
+      btn.innerHTML = `<span class="dot"></span><span class="nm"></span>${spark}${right}`;
       btn.querySelector(".nm").textContent = lbl(k);
+      // Logo URL comes from our own registry, but set it via the DOM (src as a
+      // property, not parsed from an HTML string) so a stray char can't break
+      // out of the attribute.
+      const lg = logo(k);
+      if (lg) {
+        const img = document.createElement("img");
+        img.className = "wl-logo";
+        img.alt = "";
+        img.onerror = () => { img.style.visibility = "hidden"; };
+        img.src = lg;
+        btn.replaceChild(img, btn.querySelector(".dot"));
+      }
       if (on) btn.onclick = () => select(k);
       box.appendChild(btn);
     });
