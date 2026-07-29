@@ -94,6 +94,21 @@ def upsert_quotes(conn, rows: list[dict]) -> int:
     return len(rows)
 
 
+def upsert_price_history(conn, rows: list[dict]) -> int:
+    """Daily USD share-price history for the listed companies (chart series)."""
+    if not rows:
+        return 0
+    vals = [(r["company_id"], r["date"], r.get("price_usd")) for r in rows]
+    cur = conn.cursor()
+    execute_values(
+        cur,
+        "insert into company_price_history (company_id,date,price_usd) values %s "
+        "on conflict (company_id,date) do update set price_usd=excluded.price_usd",
+        vals, page_size=1000)
+    conn.commit()
+    return len(rows)
+
+
 # --- raw map/production tables (so Comtrade/EIA/USGS fetchers can target Supabase) ---
 _FACILITY_COLS = ("id", "name", "type", "country_iso", "lat", "lon", "commodity",
                   "operator_company", "production_volume", "production_year",

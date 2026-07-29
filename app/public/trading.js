@@ -1,21 +1,48 @@
-/* Markets desk: watchlist rail + interactive price chart from prices.json.
-   Data is numeric / from our own registry; the only external strings are unit
-   and source labels, rendered via textContent. Reads/writes ?commodity=. */
+/* Markets desk: a [Commodities | Firms] switch drives one terminal — a
+   watchlist rail + interactive price chart. Commodities come from the
+   trading_series view; firms (listed operators) from firm_series, both as
+   [date, price] arrays. Firm prices are USD; firms render in mono ink to match
+   the companies aesthetic. Reads/writes ?view= & ?commodity= / ?firm=. */
 (function () {
   "use strict";
   const C = window.COMMODITIES;
   const RANGES = [["1M", 21], ["6M", 126], ["1Y", 260], ["All", Infinity]];
   const fmtNum = (n) => d3.format(n >= 1000 ? ",.0f" : ",.2f")(n);
+  const INK = "#0A0A0A";                 // firms accent (monochrome)
 
-  let data = { series: {}, units: {}, sources: {} };
-  let commodity = C.clean(new URLSearchParams(location.search).get("commodity"));
+  let mode = "commodities";              // "commodities" | "firms"
+  let comm = { series: {}, units: {}, sources: {} };
+  let firms = { order: [], series: {}, names: {}, logos: {},
+                tickers: {}, exchanges: {}, px: {}, chg: {}, loaded: false };
+
+  const params = new URLSearchParams(location.search);
+  if (params.get("view") === "firms") mode = "firms";
+  let selComm = C.clean(params.get("commodity"));
+  let selFirm = params.get("firm") || null;
   let range = "1Y";
 
-  const has = (k) => (data.series[k] || []).length > 0;
+  // ---- mode-aware accessors ----
+  const isC = () => mode === "commodities";
+  const keys = () => (isC() ? C.ORDER : firms.order);
+  const ser = (k) => (isC() ? comm.series[k] : firms.series[k]) || [];
+  const has = (k) => ser(k).length > 0;
+  const cur = () => (isC() ? selComm : selFirm);
+  const setCur = (k) => { if (isC()) selComm = k; else selFirm = k; };
+  const lbl = (k) => (isC() ? C.label(k) : (firms.names[k] || k));
+  const col = (k) => (isC() ? C.color(k) : INK);
+  const unit = (k) => (isC() ? (comm.units[k] || "") : "USD");
+  const src = (k) => (isC() ? comm.sources[k]
+    : (firms.tickers[k] + " · " + firms.exchanges[k]));
+  const logo = (k) => (isC() ? null : firms.logos[k]);
+  // Headline figures. Commodities derive from their series (~1y lookback, no
+  // live feed). Firms use the authoritative live quote (company_quotes) — its
+  // day change dodges the gap artifacts of thin ADR daily bars.
+  const price = (k) => (isC() ? (ser(k).slice(-1)[0] || [, 0])[1] : firms.px[k]);
+  const chgVal = (k) => (isC() ? pctChange(ser(k), 12) : (firms.chg[k] || 0));
+  const chgLabel = () => (isC() ? "vs ~1y ago" : "vs prev close");
+  const money = (v) => (isC() ? "" : "$") + fmtNum(v);
 
-  // Tiny inline sparkline (last ~80 points) in the commodity's colour — the
-  // Bloomberg/Koyfin watchlist tell-at-a-glance. Values are numeric, so the
-  // built SVG string is trusted.
+  // Tiny inline sparkline (last ~80 points) in the market's colour.
   function sparkSVG(s, color) {
     const pts = s.slice(-80).map((d) => d[1]);
     if (pts.length < 2) return "";
@@ -37,33 +64,74 @@
     return prev ? (100 * (last - prev) / prev) : 0;
   }
 
+  // ---- market switch ----
+  function renderSwitch() {
+    document.querySelectorAll("#mkt-switch button").forEach((b) =>
+      b.classList.toggle("on", b.dataset.m === mode));
+  }
+
+  function switchMode(m) {
+    if (m === mode) return;
+    mode = m;
+    renderSwitch();
+    if (m === "firms" && !firms.loaded) loadFirms().then(afterSwitch);
+    else afterSwitch();
+  }
+
+  function afterSwitch() {
+    if (!has(cur())) setCur(keys().find(has) || keys()[0]);
+    syncURL(); renderWatchlist(); renderRanges(); draw();
+  }
+
+  function loadFirms() {
+    return SB.get("firm_series?select=company_id,name,logo,ticker,exchange," +
+      "price_usd,change_pct,points").then((rows) => {
+      (rows || []).forEach((r) => {
+        firms.order.push(r.company_id);
+        firms.series[r.company_id] = r.points || [];
+        firms.names[r.company_id] = r.name;
+        firms.logos[r.company_id] = r.logo;
+        firms.tickers[r.company_id] = r.ticker;
+        firms.exchanges[r.company_id] = r.exchange;
+        firms.px[r.company_id] = r.price_usd;
+        firms.chg[r.company_id] = r.change_pct || 0;
+      });
+      // Rank by day change (movers first), matching each row's shown %.
+      firms.order.sort((a, b) => (firms.chg[b] || 0) - (firms.chg[a] || 0));
+      firms.loaded = true;
+      if (!selFirm || !has(selFirm)) selFirm = firms.order.find(has) || firms.order[0];
+    }).catch(() => { firms.loaded = true; });
+  }
+
   // ---- watchlist rail ----
   function renderWatchlist() {
     const box = document.getElementById("watchlist");
     box.innerHTML = "";
-    // Priced markets first (canonical order); the ones with no free price feed
-    // sink to the bottom and read "Coming soon" instead of "n/a".
-    const ordered = C.ORDER.filter(has).concat(C.ORDER.filter((k) => !has(k)));
+    // Priced markets first; unpriced (commodities only) sink and read "Coming soon".
+    const ordered = keys().filter(has).concat(keys().filter((k) => !has(k)));
     ordered.forEach((k) => {
-      const s = data.series[k] || [];
+      const s = ser(k);
       const on = has(k);
       const btn = document.createElement("button");
-      btn.className = "wl" + (on ? "" : " off") + (k === commodity ? " on" : "");
-      btn.style.setProperty("--c", C.color(k));
+      btn.className = "wl" + (on ? "" : " off") + (k === cur() ? " on" : "");
+      btn.style.setProperty("--c", col(k));
       let right;
       if (on) {
-        const last = s[s.length - 1][1];
-        const chg = pctChange(s, 12);
+        const chg = chgVal(k);
         const dir = chg >= 0 ? "up" : "down";
-        right = `<span class="rt"><span class="px">${fmtNum(last)}</span>` +
+        right = `<span class="rt"><span class="px">${money(price(k))}</span>` +
           `<span class="ch ${dir}">${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%</span></span>`;
       } else {
         right = `<span class="soon">Coming soon</span>`;
       }
-      const spark = on ? `<span class="spark">${sparkSVG(s, C.color(k))}</span>`
+      const spark = on ? `<span class="spark">${sparkSVG(s, col(k))}</span>`
         : `<span class="spark"></span>`;
-      btn.innerHTML = `<span class="dot"></span><span class="nm"></span>${spark}${right}`;
-      btn.querySelector(".nm").textContent = C.label(k);
+      const lg = logo(k);
+      const lead = lg
+        ? `<img class="wl-logo" alt="" src="${lg}" onerror="this.style.visibility='hidden'">`
+        : `<span class="dot"></span>`;
+      btn.innerHTML = `${lead}<span class="nm"></span>${spark}${right}`;
+      btn.querySelector(".nm").textContent = lbl(k);
       if (on) btn.onclick = () => select(k);
       box.appendChild(btn);
     });
@@ -72,41 +140,47 @@
   function renderRanges() {
     const box = document.getElementById("ranges");
     box.innerHTML = "";
-    RANGES.forEach(([lbl]) => {
+    RANGES.forEach(([lbl2]) => {
       const b = document.createElement("button");
-      b.className = "range-btn" + (lbl === range ? " on" : "");
-      b.style.setProperty("--c", C.color(commodity));
-      b.textContent = lbl;
-      b.onclick = () => { range = lbl; draw(); renderRanges(); };
+      b.className = "range-btn" + (lbl2 === range ? " on" : "");
+      b.style.setProperty("--c", col(cur()));
+      b.textContent = lbl2;
+      b.onclick = () => { range = lbl2; draw(); renderRanges(); };
       box.appendChild(b);
     });
   }
 
-  function select(k) {
-    commodity = k;
+  function syncURL() {
     const u = new URL(location.href);
-    u.searchParams.set("commodity", k);
+    u.searchParams.set("view", mode);
+    if (isC()) { u.searchParams.set("commodity", selComm); u.searchParams.delete("firm"); }
+    else { u.searchParams.set("firm", selFirm); u.searchParams.delete("commodity"); }
     history.replaceState(null, "", u);
+  }
+
+  function select(k) {
+    setCur(k);
+    syncURL();
     renderWatchlist(); renderRanges(); draw();
   }
 
   function windowed() {
-    const full = (data.series[commodity] || []).map((d) => [new Date(d[0]), d[1]]);
+    const full = ser(cur()).map((d) => [new Date(d[0]), d[1]]);
     const n = RANGES.find((r) => r[0] === range)[1];
     return n === Infinity ? full : full.slice(Math.max(0, full.length - n));
   }
 
   function draw() {
-    const color = C.color(commodity);
-    const unit = data.units[commodity] || "";
-    const src = data.sources && data.sources[commodity];
-    const full = data.series[commodity] || [];
+    const k = cur();
+    const color = col(k);
+    const u = unit(k);
+    const s = src(k);
+    const full = ser(k);
 
     document.getElementById("p-dot").style.background = color;
     document.getElementById("p-dot").style.boxShadow = "0 0 12px 0 " + color;
-    document.getElementById("p-name").textContent = C.label(commodity);
-    document.getElementById("p-unit").textContent = unit;
-    document.querySelectorAll(".panel-title .dot, .price-now").forEach(() => {});
+    document.getElementById("p-name").textContent = lbl(k);
+    document.getElementById("p-unit").textContent = u;
 
     const svg = d3.select("#chart");
     svg.selectAll("*").remove();
@@ -120,31 +194,31 @@
       document.getElementById("stats").innerHTML = "";
       svg.append("foreignObject").attr("x", 0).attr("y", 0).attr("width", "100%").attr("height", 360)
         .html(`<div class="no-series"><div class="big">Coming soon</div>` +
-          `<p>A live ${C.label(commodity)} price feed is on the way.</p></div>`);
+          `<p>A live ${lbl(k)} price feed is on the way.</p></div>`);
       return;
     }
 
     const series = windowed();
     const last = full[full.length - 1];
-    const chg = pctChange(full, 12);
+    const chg = chgVal(k);
     const dir = chg >= 0 ? "up" : "down";
-    document.getElementById("p-price").textContent = fmtNum(last[1]);
+    document.getElementById("p-price").textContent = money(price(k));
     const chgEl = document.getElementById("p-chg");
     chgEl.className = "chg " + dir;
-    chgEl.textContent = `${chg >= 0 ? "+" : ""}${chg.toFixed(1)}% · vs ~1y ago`;
+    chgEl.textContent = `${chg >= 0 ? "+" : ""}${chg.toFixed(1)}% · ${chgLabel()}`;
     // Window stats strip (over the visible range).
     const vals = series.map((d) => d[1]);
     const hi = d3.max(vals), lo = d3.min(vals), avg = d3.mean(vals);
     const spread = lo ? (100 * (hi - lo) / lo) : 0;
-    const cell = (k, v) => `<div class="s"><span class="k">${k}</span><span class="v">${v}</span></div>`;
+    const cell = (kk, v) => `<div class="s"><span class="k">${kk}</span><span class="v">${v}</span></div>`;
     document.getElementById("stats").innerHTML =
-      cell(range + " high", fmtNum(hi)) + cell(range + " low", fmtNum(lo)) +
-      cell("Average", fmtNum(avg)) + cell("Spread", spread.toFixed(1) + "%");
+      cell(range + " high", money(hi)) + cell(range + " low", money(lo)) +
+      cell("Average", money(avg)) + cell("Spread", spread.toFixed(1) + "%");
 
     const foot = document.getElementById("foot");
     foot.innerHTML = "";
     foot.append(document.createTextNode(`${full.length} points · `));
-    const b1 = document.createElement("b"); b1.textContent = src || "—"; foot.append(b1);
+    const b1 = document.createElement("b"); b1.textContent = s || "—"; foot.append(b1);
     foot.append(document.createTextNode(` · latest ${last[0]}`));
 
     const box = svg.node().getBoundingClientRect();
@@ -163,7 +237,7 @@
     svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`)
       .call(d3.axisLeft(y).ticks(6).tickSizeOuter(0).tickFormat((v) => fmtNum(v)));
 
-    const gid = "grad-" + commodity;
+    const gid = "grad-" + mode;
     const grad = svg.append("defs").append("linearGradient").attr("id", gid)
       .attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", 1);
     grad.append("stop").attr("offset", "0%").attr("stop-color", color).attr("stop-opacity", .3);
@@ -188,7 +262,7 @@
         hl.attr("x1", x(d[0])).attr("x2", x(d[0])).style("opacity", 1);
         hd.attr("cx", x(d[0])).attr("cy", y(d[1])).style("opacity", 1);
         tip.innerHTML = "";
-        tip.append(document.createTextNode(fmtNum(d[1]) + (unit ? " " : "")));
+        tip.append(document.createTextNode(money(d[1]) + (u ? " " : "")));
         const dd = document.createElement("span"); dd.className = "d";
         dd.textContent = d[0].toISOString().slice(0, 10); tip.append(dd);
         tip.style.left = x(d[0]) + "px";
@@ -198,54 +272,32 @@
       .on("mouseleave", () => { hl.style("opacity", 0); hd.style("opacity", 0); tip.style.opacity = 0; });
   }
 
-  // ---- equities strip: live share prices for the listed operators ----
-  // company_quotes carries a USD price + day change; we embed the company's
-  // name/logo/type via the FK. Rows deep-link into that company's profile.
-  function renderEquities() {
-    const box = document.getElementById("equities");
-    if (!box) return;
-    SB.get("company_quotes?select=company_id,ticker,exchange,price_usd,change_pct," +
-      "companies(name,logo,type)&order=change_pct.desc").then((rows) => {
-      box.innerHTML = "";
-      (rows || []).forEach((r) => {
-        const co = r.companies || {};
-        const chg = r.change_pct == null ? 0 : r.change_pct;
-        const dir = chg >= 0 ? "up" : "down";
-        const a = document.createElement("a");
-        a.className = "eq";
-        a.href = "companies.html?company=" + encodeURIComponent(r.company_id);
-        a.innerHTML =
-          `<span class="eq-top">` +
-          (co.logo ? `<img class="eq-logo" alt="" src="${co.logo}" onerror="this.remove()">` : "") +
-          `<span class="eq-tk"></span></span>` +
-          `<span class="eq-nm"></span>` +
-          `<span class="eq-rt"><span class="eq-px"></span>` +
-          `<span class="eq-ch ${dir}">${chg >= 0 ? "+" : ""}${chg.toFixed(2)}%</span></span>`;
-        a.querySelector(".eq-tk").textContent = r.ticker + " · " + r.exchange;
-        a.querySelector(".eq-nm").textContent = co.name || r.company_id;
-        a.querySelector(".eq-px").textContent =
-          r.price_usd == null ? "—" : "$" + fmtNum(r.price_usd);
-        box.appendChild(a);
-      });
-    }).catch(() => { box.innerHTML = ""; });
-  }
+  // ---- boot ----
+  document.querySelectorAll("#mkt-switch button").forEach((b) =>
+    (b.onclick = () => switchMode(b.dataset.m)));
+  renderSwitch();
+  window.addEventListener("resize", draw);
 
-  // Live from Supabase: the trading_series view already picks one source per
-  // commodity and returns the full series as a [date, price] array.
-  SB.get("trading_series?select=commodity,unit,source,points").then((rows) => {
+  // Commodities always load (needed when the user toggles back). The
+  // trading_series view already picks one source per commodity.
+  const commReady = SB.get("trading_series?select=commodity,unit,source,points").then((rows) => {
     const series = {}, units = {}, sources = {};
     rows.forEach((r) => {
       series[r.commodity] = r.points || [];
       units[r.commodity] = r.unit;
       sources[r.commodity] = r.source;
     });
-    data = { series, units, sources };
-    if (!has(commodity)) commodity = C.ORDER.find(has) || "crude";
-    renderWatchlist(); renderRanges(); draw();
-    window.addEventListener("resize", draw);
+    comm = { series, units, sources };
+    if (!has(selComm) && isC()) selComm = C.ORDER.find((k) => series[k] && series[k].length) || "crude";
   }).catch(() => {
     document.getElementById("foot").textContent = "Could not load prices from Supabase";
   });
 
-  renderEquities();
+  if (mode === "firms") {
+    Promise.all([commReady, loadFirms()]).then(() => {
+      renderWatchlist(); renderRanges(); draw();
+    });
+  } else {
+    commReady.then(() => { renderWatchlist(); renderRanges(); draw(); });
+  }
 })();

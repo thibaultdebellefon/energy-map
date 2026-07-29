@@ -330,28 +330,14 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
 /* ================================================================= TRADING */
 .terminal { display: grid; grid-template-columns: 260px 1fr; gap: 18px; align-items: start; }
 
-/* equities strip — listed operators, live USD price + day change */
-.equities { margin-top: 30px; }
-.eq-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
-.eq-head h2 { font-family: var(--disp); font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
-.eq-sub { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--faint); }
-.eq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; }
-.eq { display: flex; flex-direction: column; gap: 8px; padding: 14px 15px; text-decoration: none;
-  border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--panel);
-  box-shadow: var(--shadow-sm); transition: border-color .14s, transform .14s; }
-.eq:hover { border-color: var(--border-2); transform: translateY(-2px); }
-.eq-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 22px; }
-.eq-logo { max-height: 22px; max-width: 96px; width: auto; object-fit: contain;
-  filter: grayscale(1) contrast(1.05); }
-.eq-tk { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; color: var(--faint);
-  text-align: right; margin-left: auto; }
-.eq-nm { font-family: var(--disp); font-size: 15px; color: var(--ink); line-height: 1.2; }
-.eq-rt { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 2px; }
-.eq-px { font-family: var(--mono); font-size: 17px; font-weight: 600; color: var(--ink); }
-.eq-ch { font-family: var(--mono); font-size: 12px; font-weight: 600; }
-.eq-ch.up { color: var(--up); }
-.eq-ch.down { color: var(--down); }
+/* market switch — Commodities | Firms */
+.mkt-switch { display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 18px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--bg-2); }
+.mkt-switch button { font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  padding: 8px 20px; border: none; border-radius: 999px; background: none;
+  cursor: pointer; transition: color .14s, background .14s; }
+.mkt-switch button.on { background: var(--ink); color: #fff; }
 
 /* watchlist rail */
 .watchlist { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
@@ -367,6 +353,8 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
 .wl.on { background: color-mix(in srgb, var(--c) 12%, #fff); }
 .wl .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
 .wl.off .dot { background: var(--faint); }
+.wl .wl-logo { width: 22px; height: 16px; object-fit: contain; object-position: left center;
+  filter: grayscale(1) contrast(1.05); }
 .wl .nm { font-family: var(--sans); font-size: 13.5px; color: var(--ink); font-weight: 500; }
 .wl.off .nm { color: var(--faint); }
 .wl .rt { text-align: right; font-family: var(--mono); }

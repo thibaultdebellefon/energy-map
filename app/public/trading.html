@@ -15,8 +15,13 @@
   <div class="page-in">
     <p class="eyebrow">Markets desk</p>
     <h1>Where commodity prices are heading</h1>
-    <p class="lede">Monthly and daily price history per commodity, from FRED and Alpha
-      Vantage. Pick a market from the watchlist to chart it.</p>
+    <p class="lede">Price history for commodities and the listed operators that move
+      them. Switch market, then pick a name from the watchlist to chart it.</p>
+
+    <div class="mkt-switch" id="mkt-switch" role="group" aria-label="Market type">
+      <button data-m="commodities" class="on">Commodities</button>
+      <button data-m="firms">Firms</button>
+    </div>
 
     <div class="terminal">
       <aside class="watchlist">
@@ -44,14 +49,6 @@
         <div class="foot-note" id="foot"></div>
       </section>
     </div>
-
-    <section class="equities">
-      <div class="eq-head">
-        <h2>Equities</h2>
-        <span class="eq-sub">Listed operators · USD · day change</span>
-      </div>
-      <div id="equities" class="eq-grid"></div>
-    </section>
   </div>
 </main>
 <script src="commodities.js"></script>

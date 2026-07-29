@@ -90,11 +90,32 @@ create table if not exists company_quotes (
   price_native double precision, price_usd double precision,
   prev_close_usd double precision, change_pct double precision,
   asof timestamptz default now());
+
+create table if not exists company_price_history (
+  company_id text references companies(id) on delete cascade,
+  date date, price_usd double precision,
+  primary key (company_id, date));
+create index if not exists ix_cph_company on company_price_history (company_id);
+"""
+
+# Chart view for the Markets desk: one row per listed company with its live USD
+# quote + day change and the full daily USD series as a [date, price] array.
+FIRM_SERIES_VIEW = """
+create or replace view public.firm_series with (security_invoker=on) as
+  select h.company_id, c.name, c.logo, c.type,
+         q.ticker, q.exchange, q.price_usd, q.change_pct,
+         jsonb_agg(jsonb_build_array(h.date, h.price_usd) order by h.date) as points
+  from company_price_history h
+  join companies c on c.id = h.company_id
+  left join company_quotes q on q.company_id = h.company_id
+  group by h.company_id, c.name, c.logo, c.type, q.ticker, q.exchange,
+           q.price_usd, q.change_pct;
+grant select on public.firm_series to anon, authenticated;
 """
 
 TABLES = ["price_history", "news", "export_flows", "production", "facility",
           "companies", "company_footprint", "company_assets", "map_snapshot",
-          "company_quotes"]
+          "company_quotes", "company_price_history"]
 
 
 def apply_rls(cur):
@@ -187,6 +208,8 @@ def main():
     migrate_sqlite(cur)
     print("→ loading companies…")
     load_companies(cur)
+    print("→ creating firm_series view…")
+    cur.execute(FIRM_SERIES_VIEW)
     conn.commit()
     # report
     print("\n=== Supabase now holds ===")
