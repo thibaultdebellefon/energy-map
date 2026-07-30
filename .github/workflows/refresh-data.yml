@@ -41,6 +41,10 @@ jobs:
         continue-on-error: true
         run: python data-pipeline/fetch_news_rss.py
 
+      - name: Enrich news photos via og:image (keyless)
+        continue-on-error: true
+        run: python data-pipeline/enrich_news_images.py
+
       - name: Fetch prices → Supabase (FRED, keyless)
         continue-on-error: true
         run: python data-pipeline/fetch_prices_fred.py

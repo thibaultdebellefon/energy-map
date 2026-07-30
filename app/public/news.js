@@ -150,28 +150,46 @@
 
   const inFilter = (a) => filter === "all" || (a.tags || []).includes(filter);
 
-  // Compact teaser: the top story of each rubric, up front, so the reader sees
-  // the full spread of coverage before scrolling into any one section.
-  function digest(shown) {
-    const cards = RUBRICS.map(([k, label]) => {
-      const top = shown.find((a) => a.rubric === k);
-      if (!top) return "";
-      return `<a class="dcard" href="#sec-${k}" data-k="${k}">` +
-        `<span class="dcard-rub">${esc(label)}</span>` +
-        `<span class="dcard-t">${esc(top.title)}</span>` +
-        `<span class="dcard-m">${esc(top.source || "")} · ${esc(ago(top.date))}</span></a>`;
-    }).join("");
-    return cards ? `<div class="news-digest">${cards}</div>` : "";
+  // Compact headline row with a small thumbnail — keeps many stories visible.
+  function hitem(a) {
+    return `<a class="hitem" href="${esc(a.url)}" target="_blank" rel="noopener">` +
+      `<div class="hitem-img" style="${thumbStyle(a)}"></div>` +
+      `<div class="hitem-b"><div class="hitem-t">${esc(a.title)}</div>` +
+      `<div class="hitem-m">${commTag(a)}<span>${esc(a.source || "")}</span>` +
+      `<span>·</span><span>${esc(ago(a.date))}</span></div></div></a>`;
   }
 
-  function section(key, label, sub) {
-    const arts = articles.filter((a) => a.rubric === key && inFilter(a)).slice(0, 12);
+  // Medium photo-led card that opens each rubric block.
+  function plead(a) {
+    return `<a class="plead" href="${esc(a.url)}" target="_blank" rel="noopener">` +
+      `<div class="plead-img" style="${thumbStyle(a)}"></div>` +
+      `<div class="plead-b">${commTag(a)}<div class="plead-t">${esc(a.title)}</div>` +
+      `<div class="plead-m"><span>${esc(a.source || "")}</span><span>${esc(ago(a.date))}</span></div>` +
+      `</div></a>`;
+  }
+
+  // Right-rail "Latest" — the freshest stories as thumbnail rows.
+  function topList(shown, exclude) {
+    const arts = shown.filter((a) => a !== exclude).slice(0, 5);
     if (!arts.length) return "";
-    return `<section class="rub-sec" id="sec-${key}">` +
+    return `<div class="top-list"><span class="tl-head">Latest</span>` +
+      arts.map(hitem).join("") + `</div>`;
+  }
+
+  // A rubric block: a photo lead (a story with an image if there is one) + a
+  // stack of headlines, so each theme shows real depth at a glance.
+  function rubricBlock(key, label, sub) {
+    const arts = articles.filter((a) => a.rubric === key && inFilter(a));
+    if (!arts.length) return "";
+    const lead = arts.find((a) => safeImg(a.image)) || arts[0];
+    const rest = arts.filter((a) => a !== lead).slice(0, 5);
+    return `<section class="rblock" id="sec-${key}">` +
       `<div class="rub-head"><div><h2 class="rub-name">${esc(label)}</h2>` +
       `<span class="rub-sub">${esc(sub)}</span></div>` +
-      `<button class="rub-more" data-k="${key}">All ${arts.length >= 12 ? "12+" : arts.length} →</button></div>` +
-      `<div class="rub-row">${arts.map(acard).join("")}</div></section>`;
+      `<span class="rub-ct">${arts.length}</span></div>` +
+      plead(lead) +
+      (rest.length ? `<div class="hl-list">${rest.map(hitem).join("")}</div>` : "") +
+      `</section>`;
   }
 
   function render() {
@@ -183,21 +201,19 @@
     if (!shown.length) { $("feed").innerHTML = '<div class="empty">No stories yet.</div>'; return; }
 
     const lead = shown.find((a) => safeImg(a.image)) || shown[0];
-    let html = `<div class="news-hero">${heroCard(lead)}${priceCard(series)}</div>`;
-    html += digest(shown);
-    RUBRICS.forEach(([k, label, sub]) => { html += section(k, label, sub); });
-    // General / leftovers the reader hasn't seen in a rubric strip.
-    const rest = shown.filter((a) => !RUBRICS.some(([k]) => k === a.rubric) && a !== lead).slice(0, 12);
+    let html = `<div class="news-hero">${heroCard(lead)}` +
+      `<div class="front-rail">${priceCard(series)}${topList(shown, lead)}</div></div>`;
+    html += `<div class="rubric-grid">`;
+    RUBRICS.forEach(([k, label, sub]) => { html += rubricBlock(k, label, sub); });
+    html += `</div>`;
+    const rest = shown.filter((a) => !RUBRICS.some(([k]) => k === a.rubric) && a !== lead);
     if (rest.length) {
       html += `<section class="rub-sec"><div class="rub-head"><div>` +
         `<h2 class="rub-name">More headlines</h2>` +
         `<span class="rub-sub">Across the sector</span></div></div>` +
-        `<div class="rub-row">${rest.map(acard).join("")}</div></section>`;
+        `<div class="news-grid">${rest.slice(0, 12).map(acard).join("")}</div></section>`;
     }
     $("feed").innerHTML = html;
-    $("feed").querySelectorAll(".rub-more").forEach((b) =>
-      (b.onclick = () => document.querySelector(".chip") &&
-        b.scrollIntoView({ behavior: "smooth" })));
   }
 
   function dedupe(list) {

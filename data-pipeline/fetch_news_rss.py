@@ -73,12 +73,19 @@ def _parse_date(block: str) -> str | None:
 
 
 def _image(block: str) -> str | None:
-    url = _first([
-        r'<media:content[^>]+url="([^"]+)"', r'<media:thumbnail[^>]+url="([^"]+)"',
-        r'<enclosure[^>]+url="([^"]+)"[^>]*type="image', r'<img[^>]+src="([^"]+)"',
-    ], block)
-    if url and re.match(r"https?://", url) and re.search(r"\.(jpg|jpeg|png|webp)", url, re.I):
-        return html.unescape(url)
+    # Typed image elements (media:content / thumbnail / enclosure) declare an
+    # image, so trust the URL regardless of extension — many CDNs omit one.
+    for pat in (r'<media:content[^>]+url="([^"]+)"',
+                r'<media:thumbnail[^>]+url="([^"]+)"',
+                r'<enclosure[^>]+url="([^"]+)"[^>]*type="image'):
+        m = re.search(pat, block, re.I)
+        if m and re.match(r"https?://", m.group(1)):
+            return html.unescape(m.group(1))
+    # Inline <img> anywhere in the item (incl. content:encoded).
+    m = re.search(r'<img[^>]+src="([^"]+)"', block, re.I)
+    if m and re.match(r"https?://", m.group(1)) and \
+            re.search(r"\.(jpg|jpeg|png|webp)", m.group(1), re.I):
+        return html.unescape(m.group(1))
     return None
 
 
