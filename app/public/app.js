@@ -1013,6 +1013,7 @@
     state.selectedFacility = null; state.selectedFlow = null; state.selectedPort = null;
     d3.selectAll("#view button").classed("on", function () { return this.dataset.v === mode; });
     document.getElementById("layers").hidden = mode !== "trade";  // layer toggles: Trade only
+    document.getElementById("routes-field").hidden = mode !== "trade";  // route count: Trade only
     draw();
   }
 
