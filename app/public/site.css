@@ -566,6 +566,19 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
 .co-quick-chip:hover, .co-sug-chip:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
 .co-quick-chip .d, .co-sug-chip .d { width: 8px; height: 8px; border-radius: 50%; }
 
+/* welcome quick picks — clickable logo wall */
+.co-quick { gap: 12px; }
+.co-logo-tile { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 11px; cursor: pointer; width: 138px; height: 100px; padding: 14px 12px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: var(--r-sm);
+  transition: border-color .14s, transform .14s, box-shadow .14s; }
+.co-logo-tile:hover { border-color: var(--ink); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+.clt-logo { height: 34px; display: flex; align-items: center; justify-content: center; }
+.clt-logo img { max-height: 34px; max-width: 108px; width: auto; object-fit: contain;
+  filter: grayscale(1) contrast(1.05); }
+.co-logo-tile .clt-nm { font-family: var(--sans); font-size: 11.5px; font-weight: 500;
+  color: var(--muted); text-align: center; line-height: 1.2; }
+
 /* panel switcher */
 .co-switch { display: flex; gap: 8px; margin-bottom: 18px; }
 .co-switch .co-searchbox { flex: 1; }

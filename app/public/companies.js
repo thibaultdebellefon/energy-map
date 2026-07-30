@@ -71,9 +71,19 @@
     return `<button class="${cls}" data-id="${c.id}">` +
       `<span class="d" style="background:${c.color}"></span>${esc(c.name)}</button>`;
   }
+  // Welcome-screen quick picks: a clickable logo wall. esc() keeps the src
+  // attribute-safe; the name caption keeps favicon-only marks recognisable and
+  // is the graceful fallback if a logo fails to load.
+  function logoTile(c) {
+    const nm = esc(c.name);
+    return `<button class="co-logo-tile" data-id="${c.id}" title="${nm}">` +
+      `<span class="clt-logo">` +
+      (c.logo ? `<img alt="${nm}" src="${esc(c.logo)}" onerror="this.style.display='none'">` : "") +
+      `</span><span class="clt-nm">${nm}</span></button>`;
+  }
   function renderQuick() {
     const box = $("welcome-quick");
-    box.innerHTML = QUICK.filter((id) => byId[id]).map((id) => chip(byId[id], "co-quick-chip")).join("");
+    box.innerHTML = QUICK.filter((id) => byId[id]).map((id) => logoTile(byId[id])).join("");
     box.querySelectorAll("[data-id]").forEach((el) => el.onclick = () => select(el.dataset.id));
   }
   function renderSuggest(c) {
