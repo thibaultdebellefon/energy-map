@@ -22,7 +22,6 @@
     links.map(([href, label]) =>
       `<a href="${href}${q}"${page === href ? ' class="active"' : ""}>${label}</a>`
     ).join("") +
-    (commodity ? `<span class="site-comm">${commodity}</span>` : "") +
     `</div>`;
   document.body.classList.add("has-nav");
   document.body.prepend(nav);
