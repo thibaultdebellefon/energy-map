@@ -1,4 +1,4 @@
-/* Energy Map — interactive planisphere of crude oil & LNG trade.
+/* Vantage — interactive planisphere of crude oil & LNG trade.
    Reads data.json (built by build_data.py) + world.geojson. Pure D3 v7. */
 (function () {
   "use strict";

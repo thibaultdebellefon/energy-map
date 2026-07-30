@@ -17,7 +17,7 @@
   const nav = document.createElement("nav");
   nav.className = "site-nav";
   nav.innerHTML =
-    `<a class="site-brand" href="index.html${q}"><span class="mk"></span>ENERGY&nbsp;MAP</a>` +
+    `<a class="site-brand" href="index.html${q}"><span class="mk"></span>VANTAGE</a>` +
     `<div class="site-links">` +
     links.map(([href, label]) =>
       `<a href="${href}${q}"${page === href ? ' class="active"' : ""}>${label}</a>`
