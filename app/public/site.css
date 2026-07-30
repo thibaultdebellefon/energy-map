@@ -365,7 +365,11 @@ body.has-nav #app { height: calc(100vh - var(--nav-h)); }
 .wl .soon { font-family: var(--mono); font-size: 9.5px; letter-spacing: .04em;
   color: var(--violet); text-transform: uppercase; white-space: nowrap;
   border: 1px solid var(--violet-soft); border-radius: 20px; padding: 2px 8px; }
-.wl.off { opacity: .8; }
+/* Coming-soon rows carry no sparkline, so reclaim its column and let the name
+   flex — otherwise a long single word (Manganese) pushes the pill off-edge. */
+.wl.off { opacity: .8; grid-template-columns: auto minmax(0, 1fr) auto; }
+.wl.off .spark { display: none; }
+.wl.off .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* main chart panel */
 .panel { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;

@@ -1147,7 +1147,9 @@
     state.features.forEach((f) => { const i = isoOf(f); if (i) state.nameByIso[i] = f.properties.NAME; });
     // some ISO names not in geojson — fall back gracefully handled by nm()
 
-    document.getElementById("subtitle").textContent =
+    // #subtitle was removed in the top-bar rework; guard so boot() doesn't throw.
+    const subtitleEl = document.getElementById("subtitle");
+    if (subtitleEl) subtitleEl.textContent =
       `Energy & metals trade · ${data.meta.years.join("/")} · latest available`;
     populateCommodities();
     updateChainButton();
