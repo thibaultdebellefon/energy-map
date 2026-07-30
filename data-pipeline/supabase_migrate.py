@@ -41,8 +41,10 @@ create index if not exists ix_price_commodity_date on price_history (commodity, 
 
 create table if not exists news (
   id text primary key, title text, url text not null unique, source text,
-  published_date date, snippet text, commodities_tags jsonb);
+  published_date date, snippet text, commodities_tags jsonb, image text,
+  rubric text, tickers jsonb, sentiment real);
 create index if not exists ix_news_date on news (published_date desc);
+create index if not exists ix_news_rubric on news (rubric);
 
 create table if not exists export_flows (
   reporter_iso text not null, partner_iso text not null, hs_code text not null,

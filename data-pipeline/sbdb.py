@@ -31,20 +31,27 @@ def init_db(_conn) -> None:
 def upsert_news(conn, rows: list[dict]) -> int:
     if not rows:
         return 0
+    def _tags(v):
+        if not v:
+            return None
+        return Json(v) if isinstance(v, (list, dict)) else Json(json.loads(v))
+
     vals = [(
         r["id"], r["title"], r["url"], r.get("source"), r.get("published_date"),
-        r.get("snippet"),
-        Json(json.loads(r["commodities_tags"])) if r.get("commodities_tags") else None,
-        r.get("image"),
+        r.get("snippet"), _tags(r.get("commodities_tags")), r.get("image"),
+        r.get("rubric"), _tags(r.get("tickers")), r.get("sentiment"),
     ) for r in rows]
     cur = conn.cursor()
     execute_values(
         cur,
-        "insert into news (id,title,url,source,published_date,snippet,commodities_tags,image) "
-        "values %s on conflict (url) do update set title=excluded.title, "
-        "source=excluded.source, published_date=excluded.published_date, "
-        "snippet=excluded.snippet, commodities_tags=excluded.commodities_tags, "
-        "image=coalesce(excluded.image, news.image)",
+        "insert into news (id,title,url,source,published_date,snippet,commodities_tags,"
+        "image,rubric,tickers,sentiment) values %s on conflict (url) do update set "
+        "title=excluded.title, source=excluded.source, "
+        "published_date=excluded.published_date, snippet=excluded.snippet, "
+        "commodities_tags=excluded.commodities_tags, "
+        "image=coalesce(excluded.image, news.image), rubric=excluded.rubric, "
+        "tickers=coalesce(excluded.tickers, news.tickers), "
+        "sentiment=coalesce(excluded.sentiment, news.sentiment)",
         vals, page_size=500)
     conn.commit()
     return len(rows)

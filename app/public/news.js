@@ -1,14 +1,22 @@
-/* Newsroom — Bloomberg-style: always-visible thematic sections (one per
-   commodity), each an auto-scrolling carousel of article cards with photos, so
-   the reader sees the full diversity of coverage at a glance. Filtering by a
-   commodity switches to a full grid of that theme.
-   Data: Supabase (relevance-filtered at ingestion). All external fields escaped. */
+/* Newsroom — editorial rubrics, not a flat commodity filter. A lead story +
+   a live "price in focus" card open the page, then thematic sections:
+   Geopolitics · Deals & Contracts · Companies · Markets, each a scannable strip
+   of cards. A commodity filter stays available as a secondary lens.
+   Data: Supabase (rubric-tagged at ingestion). All external fields escaped. */
 (function () {
   "use strict";
   const C = window.COMMODITIES;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => (s || "").replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // rubric key → [label, standfirst]
+  const RUBRICS = [
+    ["geopolitics", "Geopolitics", "Sanctions · OPEC · supply risk"],
+    ["contracts", "Deals & Contracts", "Offtakes · projects · M&A"],
+    ["company", "Companies", "Earnings · results · moves"],
+    ["markets", "Markets", "Prices · demand · flows"],
+  ];
 
   function ago(dateStr) {
     if (!dateStr) return "";
@@ -20,36 +28,91 @@
     const w = Math.floor(days / 7);
     return w + (w === 1 ? " week ago" : " weeks ago");
   }
+  const fmtNum = (n) => (n >= 1000 ? Math.round(n).toLocaleString("en-US")
+    : (Math.round(n * 100) / 100).toString());
 
   const safeImg = (u) => (typeof u === "string" &&
     /^https?:\/\/[^\s"'()<>]+$/.test(u)) ? u : null;
 
-  // Card thumbnail: the article's own image, else a soft commodity-tinted
-  // gradient (so a dead host degrades to colour, never a broken image).
   function thumbStyle(a) {
     const img = safeImg(a.image);
     const c = C.color((a.tags || [])[0] || "crude");
-    const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 50%, #fff), ` +
-      `color-mix(in srgb, ${c} 16%, #fff))`;
+    const grad = `linear-gradient(135deg, color-mix(in srgb, ${c} 46%, #fff), ` +
+      `color-mix(in srgb, ${c} 14%, #fff))`;
     return img ? `background:${grad};background-image:url('${img}');` +
       `background-size:cover;background-position:center` : `background:${grad}`;
   }
 
-  function acard(a) {
+  function commTag(a) {
     const tag = (a.tags || [])[0];
+    return tag ? `<span class="acard-tag" style="color:${C.color(tag)}">` +
+      `<span class="d" style="background:${C.color(tag)}"></span>${esc(C.label(tag))}</span>` : "";
+  }
+
+  function acard(a) {
     return `<a class="acard" href="${esc(a.url)}" target="_blank" rel="noopener">` +
       `<div class="acard-img" style="${thumbStyle(a)}"></div>` +
-      `<div class="acard-b">` +
-      (tag ? `<span class="acard-tag" style="color:${C.color(tag)}">` +
-        `<span class="d" style="background:${C.color(tag)}"></span>${esc(C.label(tag))}</span>` : "") +
+      `<div class="acard-b">${commTag(a)}` +
       `<div class="acard-t">${esc(a.title)}</div>` +
       `<div class="acard-m"><span>${esc(a.source || "")}</span><span>${esc(ago(a.date))}</span></div>` +
       `</div></a>`;
   }
 
+  // Big lead card for the freshest strong story.
+  function heroCard(a) {
+    return `<a class="hero-lead" href="${esc(a.url)}" target="_blank" rel="noopener">` +
+      `<div class="hero-img" style="${thumbStyle(a)}"></div>` +
+      `<div class="hero-b"><span class="hero-eyebrow">Today</span>` +
+      `<h2 class="hero-t">${esc(a.title)}</h2>` +
+      `<div class="hero-m">${commTag(a)}<span>${esc(a.source || "")}</span>` +
+      `<span>·</span><span>${esc(ago(a.date))}</span></div></div></a>`;
+  }
+
+  // Tiny sparkline (last ~70 pts), ink stroke to match the mono system.
+  function sparkSVG(pts) {
+    const v = pts.slice(-70).map((d) => d[1]);
+    if (v.length < 2) return "";
+    const w = 132, h = 40, pad = 4;
+    const mn = Math.min(...v), mx = Math.max(...v), rng = (mx - mn) || 1;
+    const step = w / (v.length - 1);
+    const d = v.map((y, i) =>
+      `${i ? "L" : "M"}${(i * step).toFixed(1)},${(pad + (h - 2 * pad) * (1 - (y - mn) / rng)).toFixed(1)}`
+    ).join("");
+    return `<svg class="pf-spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">` +
+      `<path d="${d}" fill="none" stroke="#0A0A0A" stroke-width="1.6" ` +
+      `stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+  }
+
+  // "Price in focus": the biggest mover among priced commodities + its latest story.
+  function priceCard(series) {
+    const cand = Object.keys(series).map((k) => {
+      const p = series[k] || [];
+      if (p.length < 2) return null;
+      const last = p[p.length - 1][1];
+      const prev = p[Math.max(0, p.length - 1 - 21)][1];
+      return { k, last, chg: prev ? 100 * (last - prev) / prev : 0, pts: p };
+    }).filter(Boolean);
+    if (!cand.length) return "";
+    cand.sort((a, b) => Math.abs(b.chg) - Math.abs(a.chg));
+    const f = cand[0];
+    const dir = f.chg >= 0 ? "up" : "down";
+    const rel = articles.find((a) => (a.tags || []).includes(f.k));
+    return `<div class="price-focus" style="--c:${C.color(f.k)}">` +
+      `<span class="pf-eyebrow">Price in focus</span>` +
+      `<div class="pf-row"><span class="pf-dot"></span>` +
+      `<span class="pf-name">${esc(C.label(f.k))}</span></div>` +
+      `<div class="pf-px">${fmtNum(f.last)}<span class="pf-chg ${dir}">` +
+      `${f.chg >= 0 ? "+" : ""}${f.chg.toFixed(1)}%</span></div>` +
+      sparkSVG(f.pts) +
+      (rel ? `<a class="pf-rel" href="${esc(rel.url)}" target="_blank" rel="noopener">` +
+        `${esc(rel.title)}</a>` : "") +
+      `<a class="pf-link" href="trading.html?commodity=${f.k}">Open chart →</a></div>`;
+  }
+
+  // ---- state ----
   let filter = C.clean(new URLSearchParams(location.search).get("commodity"));
   if (!C.ORDER.includes(filter)) filter = "all";
-  let articles = [];
+  let articles = [], series = {};
 
   function setFilter(f) {
     filter = f;
@@ -80,54 +143,46 @@
       el.onclick = () => setFilter(k);
       box.appendChild(el);
     };
-    mk("all", "All", null);
+    mk("all", "All markets", null);
     C.ORDER.filter((k) => ct[k] > 0).sort((a, b) => ct[b] - ct[a])
       .forEach((k) => mk(k, C.label(k), C.color(k)));
   }
 
-  // one always-visible section per commodity, articles scrolling in a carousel
-  function renderSections() {
-    const byC = {};
-    C.ORDER.forEach((k) => { byC[k] = []; });
-    articles.forEach((a) => (a.tags || []).forEach((t) => { if (byC[t]) byC[t].push(a); }));
-    const html = C.ORDER.filter((k) => byC[k].length).map((k, i) => {
-      const arts = byC[k], col = C.color(k);
-      const marquee = arts.length >= 5;                 // enough cards to loop
-      const cards = arts.map(acard).join("");
-      const track = marquee ? cards + cards : cards;    // duplicate for seamless loop
-      const dur = Math.max(24, arts.length * 4.5);
-      const dir = i % 2 ? " rev" : "";                  // alternate drift direction
-      return `<section class="rubric" style="--c:${col}">` +
-        `<div class="rubric-head">` +
-        `<span class="rubric-dot"></span>` +
-        `<h2 class="rubric-name">${esc(C.label(k))}</h2>` +
-        `<span class="rubric-ct">${arts.length}</span>` +
-        `<button class="rubric-all" data-k="${k}">View all →</button></div>` +
-        `<div class="rubric-scroll${marquee ? " marq" : ""}">` +
-        `<div class="rubric-track${marquee ? " run" + dir : ""}" style="--dur:${dur}s">${track}</div>` +
-        `</div></section>`;
-    }).join("");
-    $("feed").innerHTML = html;
-    $("feed").querySelectorAll(".rubric-all").forEach((b) => b.onclick = () => setFilter(b.dataset.k));
-  }
+  const inFilter = (a) => filter === "all" || (a.tags || []).includes(filter);
 
-  function renderGrid(k) {
-    const arts = articles.filter((a) => (a.tags || []).includes(k));
-    $("feed").innerHTML = arts.length
-      ? `<div class="news-grid">${arts.map(acard).join("")}</div>`
-      : `<div class="empty">No headlines for ${esc(C.label(k))} yet.</div>`;
+  function section(key, label, sub) {
+    const arts = articles.filter((a) => a.rubric === key && inFilter(a)).slice(0, 12);
+    if (!arts.length) return "";
+    return `<section class="rub-sec">` +
+      `<div class="rub-head"><div><h2 class="rub-name">${esc(label)}</h2>` +
+      `<span class="rub-sub">${esc(sub)}</span></div>` +
+      `<button class="rub-more" data-k="${key}">All ${arts.length >= 12 ? "12+" : arts.length} →</button></div>` +
+      `<div class="rub-row">${arts.map(acard).join("")}</div></section>`;
   }
 
   function render() {
     const ct = counts();
     renderFilters(ct);
-    const n = filter === "all" ? articles.length : (ct[filter] || 0);
-    $("count").innerHTML = `<b>${n}</b> headline${n === 1 ? "" : "s"}` +
-      (filter === "all" ? " indexed" : " · " + esc(C.label(filter)));
-    if (!articles.length) {
-      $("feed").innerHTML = '<div class="empty">No headlines yet.</div>'; return;
+    const shown = articles.filter(inFilter);
+    $("count").innerHTML = `<b>${shown.length}</b> stor${shown.length === 1 ? "y" : "ies"}` +
+      (filter === "all" ? " · live" : " · " + esc(C.label(filter)));
+    if (!shown.length) { $("feed").innerHTML = '<div class="empty">No stories yet.</div>'; return; }
+
+    const lead = shown.find((a) => safeImg(a.image)) || shown[0];
+    let html = `<div class="news-hero">${heroCard(lead)}${priceCard(series)}</div>`;
+    RUBRICS.forEach(([k, label, sub]) => { html += section(k, label, sub); });
+    // General / leftovers the reader hasn't seen in a rubric strip.
+    const rest = shown.filter((a) => !RUBRICS.some(([k]) => k === a.rubric) && a !== lead).slice(0, 12);
+    if (rest.length) {
+      html += `<section class="rub-sec"><div class="rub-head"><div>` +
+        `<h2 class="rub-name">More headlines</h2>` +
+        `<span class="rub-sub">Across the sector</span></div></div>` +
+        `<div class="rub-row">${rest.map(acard).join("")}</div></section>`;
     }
-    if (filter === "all") renderSections(); else renderGrid(filter);
+    $("feed").innerHTML = html;
+    $("feed").querySelectorAll(".rub-more").forEach((b) =>
+      (b.onclick = () => document.querySelector(".chip") &&
+        b.scrollIntoView({ behavior: "smooth" })));
   }
 
   function dedupe(list) {
@@ -143,14 +198,18 @@
     return [...seen.values()];
   }
 
-  SB.get("news?select=title,url,source,published_date,commodities_tags,image" +
-    "&order=published_date.desc&limit=1000").then((rows) => {
-    articles = dedupe(rows.map((r) => ({
-      title: r.title, url: r.url, source: r.source,
-      date: r.published_date, tags: r.commodities_tags || [], image: r.image,
+  Promise.all([
+    SB.get("news?select=title,url,source,published_date,commodities_tags,image,rubric" +
+      "&order=published_date.desc&limit=1000"),
+    SB.get("trading_series?select=commodity,points").catch(() => []),
+  ]).then(([rows, ts]) => {
+    articles = dedupe((rows || []).map((r) => ({
+      title: r.title, url: r.url, source: r.source, date: r.published_date,
+      tags: r.commodities_tags || [], image: r.image, rubric: r.rubric || "general",
     })));
+    (ts || []).forEach((r) => { series[r.commodity] = r.points || []; });
     render();
   }).catch(() => {
-    $("feed").innerHTML = '<div class="empty">Could not load the news feed from Supabase.</div>';
+    $("feed").innerHTML = '<div class="empty">Could not load the newsroom from Supabase.</div>';
   });
 })();

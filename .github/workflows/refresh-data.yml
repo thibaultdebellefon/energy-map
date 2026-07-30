@@ -37,6 +37,10 @@ jobs:
           GDELT_QUERY_SLEEP: "6"
         run: python data-pipeline/fetch_news_gdelt.py --timespan 7d
 
+      - name: Fetch curated RSS news → Supabase (keyless, rubric-tagged)
+        continue-on-error: true
+        run: python data-pipeline/fetch_news_rss.py
+
       - name: Fetch prices → Supabase (FRED, keyless)
         continue-on-error: true
         run: python data-pipeline/fetch_prices_fred.py

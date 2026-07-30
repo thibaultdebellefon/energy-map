@@ -21,6 +21,7 @@ import time
 from gdeltdoc import Filters, GdeltDoc
 
 import news_relevance
+import news_rubrics
 import store as db
 
 # Retry/pacing budget — tunable via env so CI can fail fast on GDELT throttling
@@ -116,6 +117,7 @@ def run(timespan: str) -> dict:
             "source": m["source"], "published_date": m["published_date"],
             "snippet": None, "commodities_tags": _json.dumps(keep),
             "image": m.get("image"),
+            "rubric": news_rubrics.classify(m["title"], source_domain=m.get("source")),
         })
 
     conn = db.get_connection()
