@@ -150,10 +150,24 @@
 
   const inFilter = (a) => filter === "all" || (a.tags || []).includes(filter);
 
+  // Compact teaser: the top story of each rubric, up front, so the reader sees
+  // the full spread of coverage before scrolling into any one section.
+  function digest(shown) {
+    const cards = RUBRICS.map(([k, label]) => {
+      const top = shown.find((a) => a.rubric === k);
+      if (!top) return "";
+      return `<a class="dcard" href="#sec-${k}" data-k="${k}">` +
+        `<span class="dcard-rub">${esc(label)}</span>` +
+        `<span class="dcard-t">${esc(top.title)}</span>` +
+        `<span class="dcard-m">${esc(top.source || "")} · ${esc(ago(top.date))}</span></a>`;
+    }).join("");
+    return cards ? `<div class="news-digest">${cards}</div>` : "";
+  }
+
   function section(key, label, sub) {
     const arts = articles.filter((a) => a.rubric === key && inFilter(a)).slice(0, 12);
     if (!arts.length) return "";
-    return `<section class="rub-sec">` +
+    return `<section class="rub-sec" id="sec-${key}">` +
       `<div class="rub-head"><div><h2 class="rub-name">${esc(label)}</h2>` +
       `<span class="rub-sub">${esc(sub)}</span></div>` +
       `<button class="rub-more" data-k="${key}">All ${arts.length >= 12 ? "12+" : arts.length} →</button></div>` +
@@ -170,6 +184,7 @@
 
     const lead = shown.find((a) => safeImg(a.image)) || shown[0];
     let html = `<div class="news-hero">${heroCard(lead)}${priceCard(series)}</div>`;
+    html += digest(shown);
     RUBRICS.forEach(([k, label, sub]) => { html += section(k, label, sub); });
     // General / leftovers the reader hasn't seen in a rubric strip.
     const rest = shown.filter((a) => !RUBRICS.some(([k]) => k === a.rubric) && a !== lead).slice(0, 12);
