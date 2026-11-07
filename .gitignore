@@ -32,3 +32,4 @@ app/public/data.json
 app/public/news.json
 app/public/prices.json
 app/public/companies.json
+.vercel

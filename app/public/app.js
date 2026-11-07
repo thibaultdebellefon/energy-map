@@ -1133,10 +1133,13 @@
     }
     let data, world;
     try {
-      [data, world] = await Promise.all([
-        SB.get("map_snapshot?commodity=eq.__all__&select=data").then((r) => r[0].data),
-        d3.json("world.geojson"),
-      ]);
+      // Prefer the live Supabase snapshot; fall back to the static data.json
+      // build artifact if Supabase is unreachable (dead project, offline, etc.).
+      const snapshot = SB.get("map_snapshot?commodity=eq.__all__&select=data")
+        .then((r) => r[0].data)
+        .catch(() => d3.json("data.json"));
+      [data, world] = await Promise.all([snapshot, d3.json("world.geojson")]);
+      if (!data) throw new Error("no snapshot");
     } catch (e) {
       document.getElementById("loading").textContent =
         "Could not load data. Run: python3 app/build_data.py"; return;
