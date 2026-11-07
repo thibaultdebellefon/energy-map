@@ -25,10 +25,11 @@ venv/
 .vscode/
 .gstack/
 
-# The frontend now reads its data LIVE from Supabase — these JSON files are just
-# local build artifacts, no longer served. world.geojson (base map) and vendor/
-# stay committed (static assets Vercel serves).
-app/public/data.json
+# The frontend reads its data LIVE from Supabase — these JSON files are local
+# build artifacts. world.geojson (base map) and vendor/ stay committed (static
+# assets Vercel serves). data.json is kept committed as the map's offline
+# fallback (boot() loads it when Supabase is unreachable), so it must ship in
+# git-based Vercel deploys.
 app/public/news.json
 app/public/prices.json
 app/public/companies.json
